@@ -6,7 +6,7 @@ from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from src.pdf_reader import read_pdf
 from src.embeddings.embedding_models import (
-    eurobert_610M_embeddings,
+    langchain_embedding_model_factory
 )
 from langchain_core.embeddings import Embeddings
 from src.config import DB_NAME
@@ -17,10 +17,11 @@ __import__('pysqlite3')
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 from langchain_chroma import Chroma # noqa: E402
 
-KNOWLEDGE_BASE = str(Path(__file__).parent / "knowledge-base")
+KNOWLEDGE_BASE = str(Path(__file__).parent.parent / "knowledge-base")
 
 
 def fetch_documents(dir: str) -> list[Document]:
+    print(f"✓ Fetching documents from {dir}")
     documents = []
     pdf_files = glob.glob(dir + "/*.pdf")
 
@@ -62,7 +63,9 @@ def create_embeddings(chunks: list[Document], langchain_embeddings: Embeddings) 
 
 
 if __name__ == "__main__":
+    from src.embeddings.embedding_models import EUROBERT_610M
+    embeddings = langchain_embedding_model_factory(EUROBERT_610M)
     documents = fetch_documents(KNOWLEDGE_BASE)
     chunks = create_chunks(documents)
-    create_embeddings(chunks, eurobert_610M_embeddings)
+    create_embeddings(chunks, embeddings)
     print("Ingestion complete")
