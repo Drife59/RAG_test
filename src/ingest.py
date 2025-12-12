@@ -60,8 +60,8 @@ def create_embeddings(chunks: list[Document], langchain_embeddings: Embeddings) 
 
 
 if __name__ == "__main__":
-    from src.embeddings.embedding_models import BGE_LARGE_EN
-    embeddings = langchain_embedding_model_factory(BGE_LARGE_EN)
+    from src.embeddings.embedding_models import INTFLOAT_MULTILINGUAL_E5_LARGE
+    embeddings = langchain_embedding_model_factory(INTFLOAT_MULTILINGUAL_E5_LARGE)
     documents = fetch_documents(KNOWLEDGE_BASE)
     chunks = create_chunks(documents)
     create_embeddings(chunks, embeddings)

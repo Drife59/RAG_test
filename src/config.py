@@ -5,7 +5,7 @@ DB_NAME = str(Path(__file__).parent.parent / "vector_db")
 KNOWLEDGE_BASE = str(Path(__file__).parent.parent / "knowledge-base")
 
 # Number of chunk to retrieve to build answer
-RETRIEVAL_K = 20
+RETRIEVAL_K = 10
 
 ANSWER_SYSTEM_PROMPT = """
 Tu es un assistant pour répondre aux questions juridiques sur le code du travail.

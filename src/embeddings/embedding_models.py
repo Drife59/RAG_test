@@ -50,7 +50,8 @@ availableModels = Literal[
     "intfloat/multilingual-e5-large",
     "EuroBERT/EuroBERT-210m", 
     "EuroBERT/EuroBERT-610m", 
-    "EuroBERT/EuroBERT-2G"
+    "EuroBERT/EuroBERT-2G",
+    # "intfloat/e5-mistral-7b-instruct"
 ]
 
 @dataclass
@@ -72,6 +73,7 @@ local_model_to_config: dict[str, LangchainModelConfig] = {
     EUROBERT_210M: LangchainModelConfig(CustomSentenceTransformerEmbeddings, trust_remote_code=True),
     EUROBERT_610M: LangchainModelConfig(CustomSentenceTransformerEmbeddings, trust_remote_code=True),
     EUROBERT_2G: LangchainModelConfig(CustomSentenceTransformerEmbeddings, trust_remote_code=True),
+    INTFLOAT_MULTILINGUAL_E5_LARGE: LangchainModelConfig(CustomSentenceTransformerEmbeddings, trust_remote_code=True),
 }
 
 def langchain_embedding_model_factory(
