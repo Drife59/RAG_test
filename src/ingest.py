@@ -4,16 +4,12 @@ import glob
 from pathlib import Path
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from pdf_reader import read_pdf
-from embedding_models import (
-    # dangvantuan_camembert_base_embeddings,
-    # intfloat_multilingual_e5_large_embeddings,
-    # eurobert_210M_embeddings,
+from src.pdf_reader import read_pdf
+from src.embeddings.embedding_models import (
     eurobert_610M_embeddings,
-    # eurobert_2G_embeddings
 )
 from langchain_core.embeddings import Embeddings
-from config import DB_NAME
+from src.config import DB_NAME
 
 # We need to do this trick, since python until 3.14 has sqlite3 3.31
 # but Chroma requires 3.35+

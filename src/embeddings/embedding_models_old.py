@@ -1,6 +1,6 @@
-from langchain_huggingface import HuggingFaceEmbeddings
+# from langchain_huggingface import HuggingFaceEmbeddings
 
-from customTansformer import CustomSentenceTransformerEmbeddings
+from src.embeddings.customTansformer import CustomSentenceTransformerEmbeddings
 
 # Available native ingest model
 

@@ -3,8 +3,8 @@ from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage, HumanMessage, convert_to_messages
 from langchain_core.messages.base import BaseMessage
 from langchain_core.documents import Document
-from embedding_models import eurobert_610M_embeddings
-from config import ANSWER_MODEL, DB_NAME, RETRIEVAL_K, ANSWER_SYSTEM_PROMPT
+from src.embeddings.embedding_models import eurobert_610M_embeddings
+from src.config import ANSWER_MODEL, DB_NAME, RETRIEVAL_K, ANSWER_SYSTEM_PROMPT
 
 # We need to do this trick, since python until 3.14 has sqlite3 3.31
 # but Chroma requires 3.35+

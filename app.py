@@ -2,7 +2,7 @@ import gradio as gr
 from dotenv import load_dotenv
 from langchain_core.documents import Document
 
-from answer import answer_question
+from src.answer import answer_question
 
 load_dotenv(override=True)
 
