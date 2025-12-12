@@ -7,7 +7,7 @@ from src.embeddings.embedding_models import (
 )
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain_core.embeddings import Embeddings
-from src.config import DB_NAME, TXT_DIR
+from src.config import DB_PATH, TXT_DIR
 from pathlib import Path
 
 # We need to do this trick, since python until 3.14 has sqlite3 3.31
@@ -47,11 +47,11 @@ def _print_vector_caracteristics(vectorstore: Chroma):
     print(f"There are {count:,} vectors with {dimensions:,} dimensions in the vector store")
     
 def create_embeddings(chunks: list[Document], langchain_embeddings: Embeddings) -> Chroma:
-    if os.path.exists(DB_NAME):
-        Chroma(persist_directory=DB_NAME, embedding_function=langchain_embeddings).delete_collection()
+    if os.path.exists(DB_PATH):
+        Chroma(persist_directory=DB_PATH.as_posix(), embedding_function=langchain_embeddings).delete_collection()
 
     vectorstore = Chroma.from_documents(
-        documents=chunks, embedding=langchain_embeddings, persist_directory=DB_NAME
+        documents=chunks, embedding=langchain_embeddings, persist_directory=DB_PATH.as_posix()
     )
 
     _print_vector_caracteristics(vectorstore)

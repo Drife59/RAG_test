@@ -4,7 +4,7 @@ from langchain_core.messages import SystemMessage, HumanMessage, convert_to_mess
 from langchain_core.messages.base import BaseMessage
 from langchain_core.documents import Document
 from src.embeddings.embedding_models import INTFLOAT_MULTILINGUAL_E5_LARGE, langchain_embedding_model_factory
-from src.config import ANSWER_MODEL, DB_NAME, RETRIEVAL_K, ANSWER_SYSTEM_PROMPT
+from src.config import ANSWER_MODEL, DB_PATH, RETRIEVAL_K, ANSWER_SYSTEM_PROMPT
 
 # We need to do this trick, since python until 3.14 has sqlite3 3.31
 # but Chroma requires 3.35+
@@ -18,7 +18,7 @@ load_dotenv(override=True)
 
 embeddings = langchain_embedding_model_factory(INTFLOAT_MULTILINGUAL_E5_LARGE)
 
-vectorstore = Chroma(persist_directory=DB_NAME, embedding_function=embeddings)
+vectorstore = Chroma(persist_directory=DB_PATH.as_posix(), embedding_function=embeddings)
 retriever = vectorstore.as_retriever()
 llm = ChatOpenAI(temperature=0, model=ANSWER_MODEL)
 

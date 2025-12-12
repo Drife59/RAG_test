@@ -2,16 +2,17 @@ from pathlib import Path
 
 ANSWER_MODEL = "gpt-4.1-nano"
 
-KNOWLEDGE_BASE_PATH = Path.cwd().resolve() / "knowledge-base"
+BASE_PATH = Path.cwd().resolve()
+KNOWLEDGE_BASE_PATH = BASE_PATH / "knowledge-base"
 
-DB_NAME = str(Path(__file__).parent.parent / "vector_db")
-KNOWLEDGE_BASE = str(Path(__file__).parent.parent / "knowledge-base")
+DB_PATH = BASE_PATH / "vector_db"
 
 PDF_DIR = KNOWLEDGE_BASE_PATH / "pdf"
 TXT_DIR = KNOWLEDGE_BASE_PATH / "txt"
 CODE_DU_TRAVAIL_PATH = PDF_DIR / "code_du_travail_7mo.pdf"
 CONVENTION_COLLECTIVE_PATH = PDF_DIR / "convention_collective_syntec.pdf"
 
+# TODO: have a centered embedding / retrieval model
 
 # Number of chunk to retrieve to build answer
 RETRIEVAL_K = 10
