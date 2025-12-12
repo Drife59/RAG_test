@@ -1,7 +1,6 @@
 import os
 import sys
 import glob
-from pathlib import Path
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from src.pdf_reader import read_pdf
@@ -9,15 +8,13 @@ from src.embeddings.embedding_models import (
     langchain_embedding_model_factory
 )
 from langchain_core.embeddings import Embeddings
-from src.config import DB_NAME
+from src.config import DB_NAME, KNOWLEDGE_BASE
 
 # We need to do this trick, since python until 3.14 has sqlite3 3.31
 # but Chroma requires 3.35+
 __import__('pysqlite3')
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 from langchain_chroma import Chroma # noqa: E402
-
-KNOWLEDGE_BASE = str(Path(__file__).parent.parent / "knowledge-base")
 
 
 def fetch_documents(dir: str) -> list[Document]:
@@ -63,8 +60,8 @@ def create_embeddings(chunks: list[Document], langchain_embeddings: Embeddings) 
 
 
 if __name__ == "__main__":
-    from src.embeddings.embedding_models import EUROBERT_610M
-    embeddings = langchain_embedding_model_factory(EUROBERT_610M)
+    from src.embeddings.embedding_models import BGE_LARGE_EN
+    embeddings = langchain_embedding_model_factory(BGE_LARGE_EN)
     documents = fetch_documents(KNOWLEDGE_BASE)
     chunks = create_chunks(documents)
     create_embeddings(chunks, embeddings)

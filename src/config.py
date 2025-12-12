@@ -2,6 +2,8 @@ from pathlib import Path
 
 ANSWER_MODEL = "gpt-4.1-nano"
 DB_NAME = str(Path(__file__).parent.parent / "vector_db")
+KNOWLEDGE_BASE = str(Path(__file__).parent.parent / "knowledge-base")
+
 # Number of chunk to retrieve to build answer
 RETRIEVAL_K = 20
 

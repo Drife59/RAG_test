@@ -12,32 +12,32 @@ from src.embeddings.customTansformer import CustomSentenceTransformerEmbeddings
 # Theses models will leverage local GPU and CPU
 
 # English, 384 dim vectors  
-HUGGINGFACE_MINILM_L6 = "all-MiniLM-L6-v2"
+HUGGINGFACE_MINILM_L6: Literal["all-MiniLM-L6-v2"] = "all-MiniLM-L6-v2"
 # English, 768 dim vectors
-BGE_BASE_EN = "BAAI/bge-base-en-v1.5"
+BGE_BASE_EN: Literal["BAAI/bge-base-en-v1.5"] = "BAAI/bge-base-en-v1.5"
 # English, 1024 dim vectors 
-BGE_LARGE_EN = "BAAI/bge-large-en-v1.5" # Warning: ingestion can very long
+BGE_LARGE_EN: Literal["BAAI/bge-large-en-v1.5"] = "BAAI/bge-large-en-v1.5"
 # multilingual, 1024 dim vectors
 BGE_M3 = "BAAI/bge-m3"
 
 # French, 768 dim vectors
-DANG_CAMEMBERT_BASE = "dangvantuan/sentence-camembert-base"
-DANG_FRENCH_DOCUMENT = "dangvantuan/french-document-embedding"
+DANG_CAMEMBERT_BASE: Literal["dangvantuan/sentence-camembert-base"] = "dangvantuan/sentence-camembert-base"
+DANG_FRENCH_DOCUMENT: Literal["dangvantuan/french-document-embedding"] = "dangvantuan/french-document-embedding"
 
 # Works with NASTY warnings ("you shoud probably train this model....") 
-DANG_CAMEMBERT_LARGE_C = "dangvantuan/CrossEncoder-camembert-large"
+DANG_CAMEMBERT_LARGE_C: Literal["dangvantuan/CrossEncoder-camembert-large"] = "dangvantuan/CrossEncoder-camembert-large"
 
 # Multi langage, 1024 dim vectors
-INTFLOAT_MULTILINGUAL_E5_LARGE = "intfloat/multilingual-e5-large"
+INTFLOAT_MULTILINGUAL_E5_LARGE: Literal["intfloat/multilingual-e5-large"] = "intfloat/multilingual-e5-large"
 
 # EuroBERT are europeen models, trained by UE !
 # https://huggingface.co/EuroBERT
 # Works with a warning: 
 # No sentence-transformers model found with name EuroBERT/EuroBERT-610m. Creating a new one with mean pooling.
-EUROBERT_210M = "EuroBERT/EuroBERT-210m"
-EUROBERT_610M = "EuroBERT/EuroBERT-610m"
+EUROBERT_210M: Literal["EuroBERT/EuroBERT-210m"] = "EuroBERT/EuroBERT-210m"
+EUROBERT_610M: Literal["EuroBERT/EuroBERT-610m"] = "EuroBERT/EuroBERT-610m"
 # This one is private and need authentification
-EUROBERT_2G = "EuroBERT/EuroBERT-2G"
+EUROBERT_2G: Literal["EuroBERT/EuroBERT-2G"] = "EuroBERT/EuroBERT-2G"
 
 availableModels = Literal[
     "all-MiniLM-L6-v2", 
@@ -61,7 +61,7 @@ class LangchainModelConfig:
 
 
 # We don't want to instanciate the model here, it would fill up the GPU memory
-local_model_to_config: dict[availableModels, LangchainModelConfig] = {
+local_model_to_config: dict[str, LangchainModelConfig] = {
     HUGGINGFACE_MINILM_L6: LangchainModelConfig(HuggingFaceEmbeddings),
     BGE_BASE_EN: LangchainModelConfig(HuggingFaceEmbeddings),
     BGE_LARGE_EN: LangchainModelConfig(HuggingFaceEmbeddings),
@@ -74,11 +74,18 @@ local_model_to_config: dict[availableModels, LangchainModelConfig] = {
     EUROBERT_2G: LangchainModelConfig(CustomSentenceTransformerEmbeddings, trust_remote_code=True),
 }
 
-def langchain_embedding_model_factory(model_name: availableModels
+def langchain_embedding_model_factory(
+    model_name: availableModels
 ) -> HuggingFaceEmbeddings | CustomSentenceTransformerEmbeddings:
     model_config = local_model_to_config[model_name]
     model_class = model_config.model
+    
     # Hugging face class has no trust_remote_code parameter
     if model_class is HuggingFaceEmbeddings:
         return model_class(model_name=model_name)
+    
+    # Don't provide trust remote code would be considered as don't trust
+    if model_config.trust_remote_code is None:
+        return model_class(model_name=model_name, trust_remote_code=False)
+    
     return model_class(model_name=model_name, trust_remote_code=model_config.trust_remote_code)

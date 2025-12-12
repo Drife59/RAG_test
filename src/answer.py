@@ -3,7 +3,7 @@ from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage, HumanMessage, convert_to_messages
 from langchain_core.messages.base import BaseMessage
 from langchain_core.documents import Document
-from src.embeddings.embedding_models import eurobert_610M_embeddings
+from src.embeddings.embedding_models import EUROBERT_610M, langchain_embedding_model_factory
 from src.config import ANSWER_MODEL, DB_NAME, RETRIEVAL_K, ANSWER_SYSTEM_PROMPT
 
 # We need to do this trick, since python until 3.14 has sqlite3 3.31
@@ -16,7 +16,7 @@ from dotenv import load_dotenv # noqa: E402
 
 load_dotenv(override=True)
 
-embeddings = eurobert_610M_embeddings
+embeddings = langchain_embedding_model_factory(EUROBERT_610M)
 
 vectorstore = Chroma(persist_directory=DB_NAME, embedding_function=embeddings)
 retriever = vectorstore.as_retriever()
