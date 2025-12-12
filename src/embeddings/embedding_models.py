@@ -51,7 +51,6 @@ availableModels = Literal[
     "EuroBERT/EuroBERT-210m", 
     "EuroBERT/EuroBERT-610m", 
     "EuroBERT/EuroBERT-2G",
-    # "intfloat/e5-mistral-7b-instruct"
 ]
 
 @dataclass
@@ -91,3 +90,7 @@ def langchain_embedding_model_factory(
         return model_class(model_name=model_name, trust_remote_code=False)
     
     return model_class(model_name=model_name, trust_remote_code=model_config.trust_remote_code)
+
+# WARNING: This is like a global variable and you should NOT instanciate another embedding model somewhere else
+# It is imported in the code whenever it's needed
+current_embedding_model = langchain_embedding_model_factory(INTFLOAT_MULTILINGUAL_E5_LARGE)

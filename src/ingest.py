@@ -2,9 +2,6 @@ import os
 import sys
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from src.embeddings.embedding_models import (
-    langchain_embedding_model_factory
-)
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain_core.embeddings import Embeddings
 from src.config import DB_PATH, TXT_DIR
@@ -59,9 +56,8 @@ def create_embeddings(chunks: list[Document], langchain_embeddings: Embeddings) 
 
 
 if __name__ == "__main__":
-    from src.embeddings.embedding_models import INTFLOAT_MULTILINGUAL_E5_LARGE
-    embeddings = langchain_embedding_model_factory(INTFLOAT_MULTILINGUAL_E5_LARGE)
+    from src.embeddings.embedding_models import current_embedding_model
     documents = fetch_documents(TXT_DIR)
     chunks = create_chunks(documents)
-    create_embeddings(chunks, embeddings)
+    create_embeddings(chunks, current_embedding_model)
     print("Ingestion complete")
