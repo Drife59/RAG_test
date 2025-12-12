@@ -1,14 +1,14 @@
 import os
 import sys
-import glob
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from src.pdf_reader import read_pdf
 from src.embeddings.embedding_models import (
     langchain_embedding_model_factory
 )
+from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain_core.embeddings import Embeddings
-from src.config import DB_NAME, KNOWLEDGE_BASE
+from src.config import DB_NAME, TXT_DIR
+from pathlib import Path
 
 # We need to do this trick, since python until 3.14 has sqlite3 3.31
 # but Chroma requires 3.35+
@@ -17,18 +17,17 @@ sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 from langchain_chroma import Chroma # noqa: E402
 
 
-def fetch_documents(dir: str) -> list[Document]:
-    print(f"✓ Fetching documents from {dir}")
+def fetch_documents(dir: Path) -> list[Document]:
+    print(f"✓ Fetching documents from dir {dir}")
     documents = []
-    pdf_files = glob.glob(dir + "/*.pdf")
 
-    for pdf_file in pdf_files:
-        document = Document(
-            page_content=read_pdf(pdf_file),
-            metadata={"source": pdf_file},
-        )
-        print(f'Le document "{document.metadata["source"]}" a été chargé et contient {len(document.page_content)} caractères.')
-        documents.append(document)
+    loader = DirectoryLoader(dir.as_posix(), glob="**/*.txt", loader_cls=TextLoader, loader_kwargs={"encoding": "utf-8"})
+    folder_docs = loader.load()
+
+    for doc in folder_docs:
+        documents.append(doc)
+        filename = Path(doc.metadata["source"]).stem
+        print(f'{filename} has been loaded')
     return documents
 
 
@@ -62,7 +61,7 @@ def create_embeddings(chunks: list[Document], langchain_embeddings: Embeddings) 
 if __name__ == "__main__":
     from src.embeddings.embedding_models import INTFLOAT_MULTILINGUAL_E5_LARGE
     embeddings = langchain_embedding_model_factory(INTFLOAT_MULTILINGUAL_E5_LARGE)
-    documents = fetch_documents(KNOWLEDGE_BASE)
+    documents = fetch_documents(TXT_DIR)
     chunks = create_chunks(documents)
     create_embeddings(chunks, embeddings)
     print("Ingestion complete")
