@@ -24,7 +24,7 @@ MISTRAL_7B_LITE: Literal["mistrallite:7b"] = "mistrallite:7b"
 
 # The Ministral 3 family is designed for edge deployment, capable of running on a wide range of hardware. 
 # https://ollama.com/library/ministral-3
-MINISTRAL_3B: Literal["ministral-3:3b"] = "ministral-3:3b"
+MINISTRAL3_3B: Literal["ministral-3:3b"] = "ministral-3:3b"
 
 LLAMA_3_2: Literal["llama3.2:latest"] = "llama3.2:latest"
 
