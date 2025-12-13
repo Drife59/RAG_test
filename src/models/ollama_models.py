@@ -26,6 +26,8 @@ MISTRAL_7B_LITE: Literal["mistrallite:7b"] = "mistrallite:7b"
 # https://ollama.com/library/ministral-3
 MINISTRAL_3B: Literal["ministral-3:3b"] = "ministral-3:3b"
 
+LLAMA_3_2: Literal["llama3.2:latest"] = "llama3.2:latest"
+
 ollama_client = OpenAI(
     base_url=OLLAMA_URL,
     api_key='ollama',  # Ollama does not require an API key, but OpenAI requires it
