@@ -12,6 +12,8 @@ TXT_DIR = KNOWLEDGE_BASE_PATH / "txt"
 CODE_DU_TRAVAIL_PATH = PDF_DIR / "code_du_travail_7mo.pdf"
 CONVENTION_COLLECTIVE_PATH = PDF_DIR / "convention_collective_syntec.pdf"
 
+OLLAMA_URL = "http://localhost:11434/v1/"
+
 # TODO: have a centered embedding / retrieval model
 
 # Number of chunk to retrieve to build answer

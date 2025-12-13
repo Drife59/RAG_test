@@ -29,6 +29,7 @@ DANG_CAMEMBERT_LARGE_C: Literal["dangvantuan/CrossEncoder-camembert-large"] = "d
 
 # Multi langage, 1024 dim vectors
 INTFLOAT_MULTILINGUAL_E5_LARGE: Literal["intfloat/multilingual-e5-large"] = "intfloat/multilingual-e5-large"
+GEMMA_2B: Literal["Jaume/gemma-2b-embeddings"] = "Jaume/gemma-2b-embeddings"
 
 # EuroBERT are europeen models, trained by UE !
 # https://huggingface.co/EuroBERT
@@ -51,6 +52,7 @@ availableModels = Literal[
     "EuroBERT/EuroBERT-210m", 
     "EuroBERT/EuroBERT-610m", 
     "EuroBERT/EuroBERT-2G",
+    "Jaume/gemma-2b-embeddings"
 ]
 
 @dataclass
@@ -73,6 +75,7 @@ local_model_to_config: dict[str, LangchainModelConfig] = {
     EUROBERT_610M: LangchainModelConfig(CustomSentenceTransformerEmbeddings, trust_remote_code=True),
     EUROBERT_2G: LangchainModelConfig(CustomSentenceTransformerEmbeddings, trust_remote_code=True),
     INTFLOAT_MULTILINGUAL_E5_LARGE: LangchainModelConfig(CustomSentenceTransformerEmbeddings, trust_remote_code=True),
+    GEMMA_2B: LangchainModelConfig(CustomSentenceTransformerEmbeddings, trust_remote_code=True)
 }
 
 def langchain_embedding_model_factory(
