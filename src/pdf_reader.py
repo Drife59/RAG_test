@@ -15,8 +15,8 @@ def read_pdf(file_path: str) -> str:
 def _write_text_file(content: str, pdf_file_name: str) -> None:
     file_destination = TXT_DIR / pdf_file_name
 
-    with open(f'{file_destination}.txt', 'w', encoding='utf-8') as fichier:
-        fichier.write(content)
+    with open(f'{file_destination}.txt', 'w', encoding='utf-8') as file:
+        file.write(content)
         print(f'Document "{pdf_file_name}" has been written as txt and contain {len(content)} characters.')
 
 def _read_pdf_and_write_text_file(pdf_file: Path) -> None:
