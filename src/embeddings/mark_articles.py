@@ -1,5 +1,4 @@
 from src.config import TXT_DIR
-from src.models.ollama_models import ollama_client, MISTRAL_7B
 from src.models.mistral_models import frontier_mistral_client, MINISTRAL_3B
 from pathlib import Path
 from openai.types.chat import ChatCompletionMessageParam
@@ -13,6 +12,7 @@ user_prompt = """
     Rajoute "[START]" au dessus de chaque titre d'article.
     Conserve exactement le texte comme il est, rajoute juste les séparateurs "[START]".
     Garde 100% du contenu original, n'enlève rien.
+    Ne rajoute pas de commentaire dans la réponse, renvoie uniquement le contenu.
 
     Exemple:
     "
@@ -63,6 +63,6 @@ if __name__ == "__main__":
         messages=[
             message
         ],
-        # temperature=0.1
+        temperature=0
     )
     print(response.choices[0].message.content)
