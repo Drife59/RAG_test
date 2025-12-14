@@ -4,14 +4,13 @@ from pathlib import Path
 from openai.types.chat import ChatCompletionMessageParam
 
 
-test_file_path = TXT_DIR / "code_du_travail_164l.txt"
 
 user_prompt = """
     Tu vas recevoir en context le code du travail français, un document juridique séparé en articles.
     Ta mission est de séparer chaque article de ce document.
     Rajoute "[START]" au dessus de chaque titre d'article.
     Conserve exactement le texte comme il est, rajoute juste les séparateurs "[START]".
-    Garde 100% du contenu original, n'enlève rien.
+    Garde 100% du contenu original, n'enlève rien. Garde aussi les sauts de lignes.
     Ne rajoute pas de commentaire dans la réponse, renvoie uniquement le contenu.
 
     Exemple:
@@ -55,9 +54,12 @@ def get_message(prompt: str) -> ChatCompletionMessageParam:
     }
     
 if __name__ == "__main__":
+    test_file_path = TXT_DIR / "chunks/code_du_travail_part_1.txt"
+
     prompt = get_prompt(test_file_path)
     message = get_message(prompt)
 
+    print(f"Start to mark articles on {test_file_path}...")
     response = frontier_mistral_client.chat.completions.create(
         model=MINISTRAL_3B,
         messages=[
@@ -65,4 +67,12 @@ if __name__ == "__main__":
         ],
         temperature=0
     )
-    print(response.choices[0].message.content)
+
+    destination_file_path = TXT_DIR / "marked_chunks/code_du_travail_part_1_marked.txt"
+
+    with open(destination_file_path.as_posix(), 'w', encoding='utf-8') as f:
+        if not response.choices[0].message.content:
+            print("WARNING: LLM response is empty !")
+        else:
+            f.write(response.choices[0].message.content)
+            print(f"Process done. File {destination_file_path} created.")
