@@ -1,9 +1,14 @@
 from langchain_text_splitters import CharacterTextSplitter
 from src.config import TXT_DIR
 
-CHRUNK_PATH = TXT_DIR / "chunks"
+# This dir contains the "code du travail", splitted in "big" raw chunks.
+RAW_CHUNK_PATH = TXT_DIR / "raw_chunks"
 
-def split_text_with_langchain(input_file: str, output_prefix: str, chunk_size=10000, overlap=100):
+def split_big_txtfile_in_chunks(input_file: str, output_prefix: str, chunk_size=10000, overlap=100):
+    """
+        Split a big text file in chunks.
+        This are not chunks as LLM chunks, but just text chunks.
+    """
     print(f"Splitting file {input_file}...")
 
     with open(input_file, 'r', encoding='utf-8') as f:
@@ -21,7 +26,7 @@ def split_text_with_langchain(input_file: str, output_prefix: str, chunk_size=10
 
     for i, chunk in enumerate(chunks):
         output_file_name = f"{output_prefix}_part_{i + 1}.txt"
-        output_file_path = (CHRUNK_PATH / output_file_name).as_posix()
+        output_file_path = (RAW_CHUNK_PATH / output_file_name).as_posix()
         with open(output_file_path, 'w', encoding='utf-8') as f_out:
             f_out.write(chunk)
         print(f"File {output_file_name} created.")
@@ -32,4 +37,4 @@ if __name__ == "__main__":
     file_name = TXT_DIR / "code_du_travail_7mo.pdf.txt"
     # ~800 lines, ~7500 words, ~51K characters
     # This end up with 149 chunks
-    split_text_with_langchain(file_name.as_posix(), "code_du_travail", chunk_size=50000, overlap=300)
+    split_big_txtfile_in_chunks(file_name.as_posix(), "code_du_travail", chunk_size=50000, overlap=300)
