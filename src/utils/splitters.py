@@ -5,8 +5,7 @@ from src.config import TXT_DIR
 from pathlib import Path
 
 
-# TODO: improve name
-class CustomTextSplitter(TextSplitter):
+class SeparatorTextSplitter(TextSplitter):
     def __init__(self, separator: str = "[START]"):
         super().__init__()
         self.separator = separator
@@ -15,10 +14,12 @@ class CustomTextSplitter(TextSplitter):
     def split_text(self, text: str) -> list[str]:
         chunks = text.split(self.separator)
 
+        # TODO: should we really do this ?
         # LLM tends to add extra ``` at the beginning and end of file
         chunks[0] = chunks[0].replace("```", "")
         chunks[-1] = chunks[0].replace("```", "")
         
+        # TODO: should we really do this ? 
         # Del empty chunks
         chunks = [chunk.strip() for chunk in chunks if chunk.strip()]
         return chunks
@@ -44,23 +45,7 @@ def get_each_article_as_unique_doc(splitter: TextSplitter, dir: Path) -> list[Do
 
 if __name__ == "__main__":
     taggedfile_path = TXT_DIR / "tagged_chunks"
-    splitter = CustomTextSplitter()
+    splitter = SeparatorTextSplitter()
     docs = get_each_article_as_unique_doc(splitter, taggedfile_path)
 
     print(f"Il y a {len(docs)} articles dans le code du travail.")
-
-
-def old_main():
-    test_file_path = TXT_DIR / "tagged_chunks/code_du_travail_part_1_marked.txt"
-
-    with open(test_file_path.as_posix(), 'r', encoding='utf-8') as f:
-        text = f.read()
-
-    splitter = CustomTextSplitter()
-    
-    chunks = splitter.split_text(text)
-    
-    for i, chunk in enumerate(chunks):
-        print(f"Chunk {i}: \n {chunk}\n")
-
-    print(f"Le nombre d'articles est: {len(chunks)}")
