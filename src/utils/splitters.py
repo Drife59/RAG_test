@@ -13,14 +13,14 @@ class CustomTextSplitter(TextSplitter):
         chunks = text.split(self.separator)
 
         # LLM tends to add extra ``` at the beginning and end of file
-        # chunks[0] = chunks[0].replace("```", "")
-        # chunks[-1] = chunks[0].replace("```", "")
+        chunks[0] = chunks[0].replace("```", "")
+        chunks[-1] = chunks[0].replace("```", "")
         
         # Del empty chunks
         chunks = [chunk.strip() for chunk in chunks if chunk.strip()]
         return chunks
     
-    def split_text_to_documents(self, text: str) -> list[str]:
+    def split_text_to_documents(self, text: str) -> list[Document]:
         chunks = self.split_text(text)
         return [Document(page_content=chunk) for chunk in chunks]
     
