@@ -73,16 +73,16 @@ def get_prompts_from_raw_chunks(dir: Path) -> list[FilePrompt]:
 
     return file_prompts
 
-def save_marked_article(file_name: str, content: str) -> None:
-    destination_file_path = TXT_DIR / f"marked_chunks/{file_name}_marked.txt"
+def save_tagged_article(file_name: str, content: str) -> None:
+    destination_file_path = TXT_DIR / f"tagged_chunks/{file_name}_tagged.txt"
 
     with open(destination_file_path.as_posix(), 'w', encoding='utf-8') as f:
         f.write(content)
 
-    print(f"File {file_name} marked and saved.")
+    print(f"File {file_name} tagged and saved.")
 
-def get_marked_articles(client: OpenAI, file_prompt: FilePrompt) -> str | None:
-    print(f"Start to mark articles on {file_prompt.file_name}...")
+def get_tagged_articles(client: OpenAI, file_prompt: FilePrompt) -> str | None:
+    print(f"Start to tag articles on {file_prompt.file_name}...")
 
     message = get_message(file_prompt.prompt)
     response = client.chat.completions.create(
@@ -105,33 +105,7 @@ if __name__ == "__main__":
     file_prompts = get_prompts_from_raw_chunks(raw_chunks_dir)
 
     for file_prompt in file_prompts:
-        marked_articles_content = get_marked_articles(frontier_mistral_client, file_prompt)
+        tagged_articles_content = get_tagged_articles(frontier_mistral_client, file_prompt)
 
-        if marked_articles_content:
-            save_marked_article(file_prompt.file_name, marked_articles_content)
-
-
-
-def old_main():
-    test_file_path = TXT_DIR / "chunks/code_du_travail_part_1.txt"
-
-    prompt = get_prompt(test_file_path)
-    message = get_message(prompt)
-
-    print(f"Start to mark articles on {test_file_path}...")
-    response = frontier_mistral_client.chat.completions.create(
-        model=MINISTRAL_3B,
-        messages=[
-            message
-        ],
-        temperature=0
-    )
-
-    destination_file_path = TXT_DIR / "marked_chunks/code_du_travail_part_1_marked.txt"
-
-    with open(destination_file_path.as_posix(), 'w', encoding='utf-8') as f:
-        if not response.choices[0].message.content:
-            print("WARNING: LLM response is empty !")
-        else:
-            f.write(response.choices[0].message.content)
-            print(f"Process done. File {destination_file_path} created.")
+        if tagged_articles_content:
+            save_tagged_article(file_prompt.file_name, tagged_articles_content)
