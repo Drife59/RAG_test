@@ -1,11 +1,13 @@
 import os
 import sys
+from langchain_text_splitters import TextSplitter
 from langchain_core.documents import Document
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+# from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain_core.embeddings import Embeddings
 from src.config import DB_PATH, TXT_DIR
 from pathlib import Path
+from src.utils.splitters import SeparatorTextSplitter
 
 # We need to do this trick, since python until 3.14 has sqlite3 3.31
 # but Chroma requires 3.35+
@@ -28,9 +30,8 @@ def fetch_documents(dir: Path) -> list[Document]:
     return documents
 
 
-def create_chunks(documents: list[Document]) -> list[Document]:
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=600, chunk_overlap=200)
-    chunks = text_splitter.split_documents(documents)
+def create_chunks(splitter: TextSplitter, documents: list[Document]) -> list[Document]:
+    chunks = splitter.split_documents(documents)
     print(f"✓ Created {len(chunks)} chunks")
     return chunks
 
@@ -57,7 +58,13 @@ def create_embeddings(chunks: list[Document], langchain_embeddings: Embeddings) 
 
 if __name__ == "__main__":
     from src.embeddings.embedding_models import current_embedding_model
-    documents = fetch_documents(TXT_DIR)
-    chunks = create_chunks(documents)
+
+    # text_splitter = RecursiveCharacterTextSplitter(chunk_size=600, chunk_overlap=200)
+    text_splitter = SeparatorTextSplitter(separator="[START]")
+    tagged_file_dir = TXT_DIR / "tagged_chunks"
+
+    documents = fetch_documents(tagged_file_dir)
+    chunks = create_chunks(text_splitter, documents)
+
     create_embeddings(chunks, current_embedding_model)
     print("Ingestion complete")
