@@ -1,8 +1,10 @@
+import os
+from dataclasses import dataclass
 from src.config import TXT_DIR
 from src.models.mistral_models import frontier_mistral_client, MINISTRAL_3B
 from pathlib import Path
 from openai.types.chat import ChatCompletionMessageParam
-
+from openai import OpenAI
 
 
 user_prompt = """
@@ -41,6 +43,13 @@ user_prompt = """
     {context} 
 """
 
+
+@dataclass
+class FilePrompt:
+    file_name: str
+    prompt: str
+
+
 def get_prompt(file_path: Path) -> str:
     with open(file_path.as_posix(), 'r', encoding='utf-8') as f:
         file_content = f.read()
@@ -52,8 +61,58 @@ def get_message(prompt: str) -> ChatCompletionMessageParam:
         "role": "user",
         "content": prompt
     }
-    
+
+def get_prompts_from_raw_chunks(dir: Path) -> list[FilePrompt]:
+    print(f"✓ Making prompts from raw chunked dir {dir}")
+    file_names = os.listdir(dir.as_posix())
+    print("Number of files:", len(file_names))
+
+    file_prompts = []
+    for file_name in file_names:
+        file_prompts.append(FilePrompt(file_name=file_name, prompt=get_prompt(dir / Path(file_name))))
+
+    return file_prompts
+
+def save_marked_article(file_name: str, content: str) -> None:
+    destination_file_path = TXT_DIR / f"marked_chunks/{file_name}_marked.txt"
+
+    with open(destination_file_path.as_posix(), 'w', encoding='utf-8') as f:
+        f.write(content)
+
+    print(f"File {file_name} marked and saved.")
+
+def get_marked_articles(client: OpenAI, file_prompt: FilePrompt) -> str | None:
+    print(f"Start to mark articles on {file_prompt.file_name}...")
+
+    message = get_message(file_prompt.prompt)
+    response = client.chat.completions.create(
+        model=MINISTRAL_3B,
+        messages=[
+            message
+        ],
+        temperature=0
+    )
+
+    if not response.choices[0].message.content:
+        print(f"ERROR: LLM response empty, could not process {file_prompt.file_name} !")
+        return None
+
+    return response.choices[0].message.content
+
+
 if __name__ == "__main__":
+    raw_chunks_dir = TXT_DIR / "raw_chunks"
+    file_prompts = get_prompts_from_raw_chunks(raw_chunks_dir)
+
+    for file_prompt in file_prompts:
+        marked_articles_content = get_marked_articles(frontier_mistral_client, file_prompt)
+
+        if marked_articles_content:
+            save_marked_article(file_prompt.file_name, marked_articles_content)
+
+
+
+def old_main():
     test_file_path = TXT_DIR / "chunks/code_du_travail_part_1.txt"
 
     prompt = get_prompt(test_file_path)
