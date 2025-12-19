@@ -1,35 +1,23 @@
 from src.config import TXT_DIR
 from src.models.mistral_models import MINISTRAL_3B
 from src.preprocessing.article_extractor import get_articles, index_article_by_id
+from src.preprocessing.articles_part_1 import (
+    ID_ARTICLE_L1, CONTENT_ARTICLE_L1,
+    ID_ARTICLE_L2, CONTENT_ARTICLE_L2,
+    ID_ARTICLE_L3, CONTENT_ARTICLE_L3,
+    ID_ARTICLE_L1111_1, CONTENT_ARTICLE_L1111_1,
+    ID_ARTICLE_L1111_2, CONTENT_ARTICLE_L1111_2,
+    ID_ARTICLE_L1111_3, CONTENT_ARTICLE_L1111_3,
+    ID_ARTICLE_L1121_1, CONTENT_ARTICLE_L1121_1,
+    ID_ARTICLE_L1121_2, CONTENT_ARTICLE_L1121_2,
+    ID_ARTICLE_L1131_1, CONTENT_ARTICLE_L1131_1,
+    ID_ARTICLE_L1131_2, CONTENT_ARTICLE_L1131_2,
+    ID_ARTICLE_L1132_1, CONTENT_ARTICLE_L1132_1,
+    ID_ARTICLE_L1132_2, CONTENT_ARTICLE_L1132_2
+)
 
 TEST_DIR = TXT_DIR / "raw_chunks" 
 
-
-ID_ARTICLE_L1 = "Article L1"
-CONTENT_ARTICLE_L1 = """
-Tout projet de réforme envisagé par le Gouvernement qui porte sur les relations individuelles et collectives
-du travail, l'emploi et la formation professionnelle et qui relève du champ de la négociation nationale et
-interprofessionnelle fait l'objet d'une concertation préalable avec les organisations syndicales de salariés et
-d'employeurs représentatives au niveau national et interprofessionnel en vue de l'ouverture éventuelle d'une
-telle négociation.
- 
-A cet effet, le Gouvernement leur communique un document d'orientation présentant des éléments de
-diagnostic, les objectifs poursuivis et les principales options.
- 
-Lorsqu'elles font connaître leur intention d'engager une telle négociation, les organisations indiquent
-également au Gouvernement le délai qu'elles estiment nécessaire pour conduire la négociation.
- 
-Le présent article n'est pas applicable en cas d'urgence. Lorsque le Gouvernement décide de mettre en
-oeuvre un projet de réforme en l'absence de procédure de concertation, il fait connaître cette décision
-aux organisations mentionnées au premier alinéa en la motivant dans un document qu'il transmet à ces
-organisations avant de prendre toute mesure nécessitée par l'urgence.
-"""
-
-ID_ARTICLE_L1121_1 = "Article L1121-1"
-CONTENT_ARTICLE_L1121_1 = """ 
-Nul ne peut apporter aux droits des personnes et aux libertés individuelles et collectives de restrictions qui ne
-seraient pas justifiées par la nature de la tâche à accomplir ni proportionnées au but recherché.
-"""
 
 def string_similarity(chaine1: str, chaine2: str) -> float:
     def distance_levenshtein(s1, s2):
@@ -66,18 +54,31 @@ def test_article_extractor_part_1():
 
     article_ids = article_by_id.keys()
 
-    assert "Article L2" in article_ids
-    assert "Article L3" in article_ids
-    assert "Article L1111-1" in article_ids
-    assert "Article L1111-2" in article_ids
-    assert "Article L1111-3" in article_ids
-    assert "Article L1121-1" in article_ids
-    assert "Article L1121-2" in article_ids
-    assert "Article L1131-1" in article_ids
-    assert "Article L1131-2" in article_ids
-    assert "Article L1132-1" in article_ids
-    assert "Article L1132-2" in article_ids
+    assert ID_ARTICLE_L2 in article_ids
+    assert ID_ARTICLE_L3 in article_ids
+    assert ID_ARTICLE_L1111_1 in article_ids
+    assert ID_ARTICLE_L1111_2 in article_ids
+    assert ID_ARTICLE_L1111_3 in article_ids
+    assert ID_ARTICLE_L1121_1 in article_ids
+    assert ID_ARTICLE_L1121_2 in article_ids
+    assert ID_ARTICLE_L1131_1 in article_ids
+    assert ID_ARTICLE_L1131_2 in article_ids
+    assert ID_ARTICLE_L1132_1 in article_ids
+    assert ID_ARTICLE_L1132_2 in article_ids
 
+    assert string_similarity(article_by_id[ID_ARTICLE_L1], CONTENT_ARTICLE_L1) > 0.97
+    assert string_similarity(article_by_id[ID_ARTICLE_L2], CONTENT_ARTICLE_L2) > 0.97
+    assert string_similarity(article_by_id[ID_ARTICLE_L3], CONTENT_ARTICLE_L3) > 0.97
+    assert string_similarity(article_by_id[ID_ARTICLE_L1111_1], CONTENT_ARTICLE_L1111_1) > 0.97
+    assert string_similarity(article_by_id[ID_ARTICLE_L1111_2], CONTENT_ARTICLE_L1111_2) > 0.97
+    assert string_similarity(article_by_id[ID_ARTICLE_L1111_3], CONTENT_ARTICLE_L1111_3) > 0.97
     assert string_similarity(article_by_id[ID_ARTICLE_L1121_1], CONTENT_ARTICLE_L1121_1) > 0.97
+    assert string_similarity(article_by_id[ID_ARTICLE_L1121_2], CONTENT_ARTICLE_L1121_2) > 0.97
+    assert string_similarity(article_by_id[ID_ARTICLE_L1131_1], CONTENT_ARTICLE_L1131_1) > 0.97
+    # Does not work because of the "chapitre II (...)"
+    # assert string_similarity(article_by_id[ID_ARTICLE_L1131_2], CONTENT_ARTICLE_L1131_2) > 0.97
+    assert string_similarity(article_by_id[ID_ARTICLE_L1132_1], CONTENT_ARTICLE_L1132_1) > 0.97
+    assert string_similarity(article_by_id[ID_ARTICLE_L1132_2], CONTENT_ARTICLE_L1132_2) > 0.97
+
     
 
