@@ -37,4 +37,4 @@ if __name__ == "__main__":
     file_name = TXT_DIR / "code_du_travail_7mo.pdf.txt"
     # ~800 lines, ~7500 words, ~51K characters
     # This end up with 149 chunks
-    split_big_txtfile_in_chunks(file_name.as_posix(), "code_du_travail", chunk_size=50000, overlap=300)
+    split_big_txtfile_in_chunks(file_name.as_posix(), "code_du_travail", chunk_size=10000, overlap=300)
