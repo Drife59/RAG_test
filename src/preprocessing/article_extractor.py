@@ -70,6 +70,10 @@ def get_articles(file_path: Path, model: str) -> list[dict]:
     # The last article is probably troncated, do not take it
     return json_response["articles"][:-1]
 
+def index_article_by_id(articles: list[dict]) -> dict[str, str]:
+    return {article["id"]: article["content"] for article in articles}
+
+
 if __name__ == "__main__":
     test_path_164l = TXT_DIR / "code_du_travail_164l.txt"
     test_part1_path = TXT_DIR / "raw_chunks/code_du_travail_part_1.txt"
