@@ -1,9 +1,8 @@
 from src.config import TXT_DIR
 from src.preprocessing.utils import string_similarity
-from src.models.mistral_models import MINISTRAL_3B
+from src.models.mistral_models import MINISTRAL_3B, frontier_mistral_client
 from src.preprocessing.extractor.article_extractor import get_articles, index_article_by_id
 from src.preprocessing.cleaner.article_cleaner import clean_article
-from src.models.mistral_models import frontier_mistral_client
 from src.preprocessing.extractor.article_part.articles_part_1 import (
     ID_ARTICLE_L1, CONTENT_ARTICLE_L1,
     ID_ARTICLE_L2, CONTENT_ARTICLE_L2,
@@ -45,7 +44,7 @@ TEST_DIR = TXT_DIR / "test"
 MINIMUM_SIMILARITY = 0.95
 
 def test_article_extractor_part_1():
-    articles = get_articles(TEST_DIR / "code_du_travail_part_1.txt", MINISTRAL_3B)
+    articles = get_articles(TEST_DIR / "code_du_travail_part_1.txt", frontier_mistral_client, MINISTRAL_3B)
     # 13 articles in this first file, but the last one is troncated and was removed
     assert len(articles) == 12
 
@@ -83,7 +82,7 @@ def test_article_extractor_part_1():
     assert string_similarity(article_by_id[ID_ARTICLE_L1132_2], CONTENT_ARTICLE_L1132_2) > MINIMUM_SIMILARITY
 
 def test_article_extraction_plus_clean_part_1():
-    articles = get_articles(TEST_DIR / "code_du_travail_part_1.txt", MINISTRAL_3B)
+    articles = get_articles(TEST_DIR / "code_du_travail_part_1.txt", frontier_mistral_client, MINISTRAL_3B)
     article_by_id = index_article_by_id(articles)
     article_ids = article_by_id.keys()
 
@@ -105,7 +104,7 @@ def test_article_extraction_plus_clean_part_1():
     assert string_similarity(article_by_id[ID_ARTICLE_L1131_2], cleaned_content_l1131_2) > MINIMUM_SIMILARITY
 
 def test_article_extractor_part_10():
-    articles = get_articles(TEST_DIR / "code_du_travail_part_10.txt", MINISTRAL_3B)
+    articles = get_articles(TEST_DIR / "code_du_travail_part_10.txt", frontier_mistral_client, MINISTRAL_3B)
 
     assert len(articles) == 20
 

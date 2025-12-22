@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from openai import OpenAI
 from src.models.mistral_models import frontier_mistral_client
 from src.config import TXT_DIR
 from src.models.mistral_models import MINISTRAL_3B
@@ -45,11 +46,11 @@ def get_messages(file_path: Path) -> list[ChatCompletionMessageParam]:
         {"role": "user", "content": get_prompt(file_path)},
     ]
 
-def get_json_response(file_path: Path, model: str) -> dict | None:
+def get_json_response(file_path: Path, client: OpenAI, model: str) -> dict | None:
     response_format: ResponseFormat = {"type": "json_object"}
 
     messages = get_messages(file_path)
-    response = frontier_mistral_client.chat.completions.create(
+    response = client.chat.completions.create(
         model=model, 
         messages=messages,
         response_format=response_format
@@ -61,8 +62,8 @@ def get_json_response(file_path: Path, model: str) -> dict | None:
     
     return json.loads(response_content)
 
-def get_articles(file_path: Path, model: str) -> list[dict]:
-    json_response = get_json_response(file_path, model)
+def get_articles(file_path: Path, client: OpenAI, model: str) -> list[dict]:
+    json_response = get_json_response(file_path, client, model)
 
     if not json_response:
         return []
@@ -77,7 +78,7 @@ def index_article_by_id(articles: list[dict]) -> dict[str, str]:
 if __name__ == "__main__":
     test_path_164l = TXT_DIR / "code_du_travail_164l.txt"
     test_part1_path = TXT_DIR / "chunks/code_du_travail_part_1.txt"
-    json_response = get_json_response(test_part1_path, MINISTRAL_3B)
+    json_response = get_json_response(test_part1_path, frontier_mistral_client, MINISTRAL_3B)
 
     with open("result.txt", 'w', encoding='utf-8') as f:
         f.write(json.dumps(json_response, indent=4, ensure_ascii=False))
