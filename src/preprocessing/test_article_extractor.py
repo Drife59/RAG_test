@@ -38,7 +38,7 @@ from src.preprocessing.article_part.articles_part_10 import (
     ID_ARTICLE_L1225_41, CONTENT_ARTICLE_L1225_41,
 )
 
-TEST_DIR = TXT_DIR / "raw_chunks" 
+TEST_DIR = TXT_DIR / "test" 
 
 MINIMUM_SIMILARITY = 0.95
 
