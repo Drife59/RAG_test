@@ -76,7 +76,7 @@ def index_article_by_id(articles: list[dict]) -> dict[str, str]:
 
 if __name__ == "__main__":
     test_path_164l = TXT_DIR / "code_du_travail_164l.txt"
-    test_part1_path = TXT_DIR / "raw_chunks/code_du_travail_part_1.txt"
+    test_part1_path = TXT_DIR / "chunks/code_du_travail_part_1.txt"
     json_response = get_json_response(test_part1_path, MINISTRAL_3B)
 
     with open("result.txt", 'w', encoding='utf-8') as f:

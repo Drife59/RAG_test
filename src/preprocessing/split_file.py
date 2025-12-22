@@ -2,7 +2,7 @@ from langchain_text_splitters import CharacterTextSplitter
 from src.config import TXT_DIR
 
 # This dir contains the "code du travail", splitted in "big" raw chunks.
-RAW_CHUNK_PATH = TXT_DIR / "raw_chunks"
+RAW_CHUNK_PATH = TXT_DIR / "chunks"
 
 def split_big_txtfile_in_chunks(input_file: str, output_prefix: str, chunk_size=10000, overlap=100):
     """
@@ -37,4 +37,4 @@ if __name__ == "__main__":
     file_name = TXT_DIR / "code_du_travail_7mo.pdf.txt"
     # ~800 lines, ~7500 words, ~51K characters
     # This end up with 149 chunks
-    split_big_txtfile_in_chunks(file_name.as_posix(), "code_du_travail", chunk_size=10000, overlap=300)
+    split_big_txtfile_in_chunks(file_name.as_posix(), "code_du_travail", chunk_size=10000, overlap=500)
