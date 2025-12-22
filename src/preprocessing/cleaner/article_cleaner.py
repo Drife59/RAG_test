@@ -30,16 +30,16 @@ def get_messages(article_content: str) -> list[ChatCompletionMessageParam]:
         {"role": "user", "content": user_prompt},
     ]
 
-def get_response(client: OpenAI, messages: list[ChatCompletionMessageParam]) -> str | None:
+def get_response(client: OpenAI, model: str, messages: list[ChatCompletionMessageParam]) -> str | None:
     response = client.chat.completions.create(
-        model=MINISTRAL_3B,
+        model=model,
         messages=messages,
         temperature=0
     )
     return response.choices[0].message.content
 
-def clean_article(client: OpenAI, article: str) -> str | None:
-    cleaned_article = get_response(client, get_messages(article))
+def clean_article(client: OpenAI, model: str, article: str) -> str | None:
+    cleaned_article = get_response(client, model, get_messages(article))
 
     if not cleaned_article:
         print("ERROR: LLM response empty, could not process article !")
@@ -49,4 +49,4 @@ def clean_article(client: OpenAI, article: str) -> str | None:
 
 
 if __name__ == "__main__":
-    print(clean_article(frontier_mistral_client, article_with_noise_both_side))
+    print(clean_article(frontier_mistral_client, MINISTRAL_3B, article_with_noise_both_side))
