@@ -1,7 +1,6 @@
 import os
 from langchain_text_splitters import TextSplitter
 from langchain_core.documents import Document
-from src.config import TXT_DIR
 from pathlib import Path
 
 
@@ -30,7 +29,7 @@ class SeparatorTextSplitter(TextSplitter):
     
 def get_each_article_as_unique_doc(splitter: TextSplitter, dir: Path) -> list[Document]:
     file_names = os.listdir(dir.as_posix())
-    print("Number of marked files:", len(file_names))
+    print("Number of files:", len(file_names))
 
     docs = []
     for file_name in file_names:
@@ -42,10 +41,3 @@ def get_each_article_as_unique_doc(splitter: TextSplitter, dir: Path) -> list[Do
                 docs.append(Document(page_content=article, metadata={"source": file_name}))
     
     return docs
-
-if __name__ == "__main__":
-    taggedfile_path = TXT_DIR / "tagged_chunks"
-    splitter = SeparatorTextSplitter()
-    docs = get_each_article_as_unique_doc(splitter, taggedfile_path)
-
-    print(f"Il y a {len(docs)} articles dans le code du travail.")
