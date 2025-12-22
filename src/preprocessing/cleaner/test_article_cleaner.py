@@ -1,5 +1,5 @@
-from src.preprocessing.article_cleaner import clean_article
-from src.preprocessing.content_article_cleaner import (
+from src.preprocessing.cleaner.article_cleaner import clean_article
+from src.preprocessing.cleaner.content_article_cleaner import (
     article_with_chapitre,
     cleaned_article_with_chapitre,
     article_with_plenty_noise,

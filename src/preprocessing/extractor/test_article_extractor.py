@@ -1,8 +1,8 @@
 from src.config import TXT_DIR
 from src.preprocessing.utils import string_similarity
 from src.models.mistral_models import MINISTRAL_3B
-from src.preprocessing.article_extractor import get_articles, index_article_by_id
-from src.preprocessing.article_part.articles_part_1 import (
+from src.preprocessing.extractor.article_extractor import get_articles, index_article_by_id
+from src.preprocessing.extractor.article_part.articles_part_1 import (
     ID_ARTICLE_L1, CONTENT_ARTICLE_L1,
     ID_ARTICLE_L2, CONTENT_ARTICLE_L2,
     ID_ARTICLE_L3, CONTENT_ARTICLE_L3,
@@ -17,7 +17,7 @@ from src.preprocessing.article_part.articles_part_1 import (
     ID_ARTICLE_L1132_2, CONTENT_ARTICLE_L1132_2
 )
 
-from src.preprocessing.article_part.articles_part_10 import (
+from src.preprocessing.extractor.article_part.articles_part_10 import (
     ID_ARTICLE_L1225_24, CONTENT_ARTICLE_L1225_24,
     ID_ARTICLE_L1225_25, CONTENT_ARTICLE_L1225_25,
     ID_ARTICLE_L1225_26, CONTENT_ARTICLE_L1225_26,

@@ -5,7 +5,7 @@ Allow the clean articles from unrellevant text, like chapter, title, section, et
 from src.models.mistral_models import frontier_mistral_client
 from src.models.mistral_models import MINISTRAL_3B
 from openai import OpenAI
-from src.preprocessing.content_article_cleaner import article_with_noise_both_side
+from src.preprocessing.cleaner.content_article_cleaner import article_with_noise_both_side
 
 from openai.types.chat.chat_completion_message_param import ChatCompletionMessageParam
 
@@ -38,7 +38,7 @@ def get_response(client: OpenAI, messages: list[ChatCompletionMessageParam]) -> 
     )
     return response.choices[0].message.content
 
-def clean_article(client: OpenAI, article: str) -> str:
+def clean_article(client: OpenAI, article: str) -> str | None:
     cleaned_article = get_response(client, get_messages(article))
 
     if not cleaned_article:
