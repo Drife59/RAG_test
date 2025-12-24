@@ -1,13 +1,14 @@
 import os
 import sys
-from langchain_text_splitters import TextSplitter
+from tqdm import tqdm
+from pathlib import Path
 from langchain_core.documents import Document
-# from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain_core.embeddings import Embeddings
 from src.config import DB_PATH, TXT_DIR
-from pathlib import Path
-from src.utils.splitters import SeparatorTextSplitter
+from src.preprocessing.extractor.article_extractor import get_articles, index_article_by_id
+from src.preprocessing.cleaner.article_cleaner import clean_article
+from src.models.mistral_models import frontier_mistral_client, MINISTRAL_3B
 
 # We need to do this trick, since python until 3.14 has sqlite3 3.31
 # but Chroma requires 3.35+
@@ -16,7 +17,7 @@ sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 from langchain_chroma import Chroma # noqa: E402
 
 
-def fetch_documents(dir: Path) -> list[Document]:
+def fetch_documents_old(dir: Path) -> list[Document]:
     print(f"✓ Fetching documents from dir {dir}")
     documents = []
 
@@ -29,11 +30,36 @@ def fetch_documents(dir: Path) -> list[Document]:
         print(f'{filename} has been loaded')
     return documents
 
+def clean_articles(articles_by_id: dict[str, str]) -> dict[str, str | None]:
+    print("Start cleaning articles...")
 
-def create_chunks(splitter: TextSplitter, documents: list[Document]) -> list[Document]:
-    chunks = splitter.split_documents(documents)
-    print(f"✓ Created {len(chunks)} chunks")
-    return chunks
+    cleaned_articles_by_id: dict[str, str | None] = {}
+    for article_id, content in tqdm(articles_by_id.items()):
+        cleaned_articles_by_id[article_id] = clean_article(frontier_mistral_client, MINISTRAL_3B, content)
+
+    print(f"{len(cleaned_articles_by_id)} articles cleaned.")
+    return cleaned_articles_by_id
+
+def get_articles_from_chunks(file_paths: list[str]) -> dict[str, str]:
+    articles_by_id: dict[str, str] = {}
+    for file_path in tqdm(file_paths):
+        print(f"Processing {file_path}...")
+        articles = get_articles(Path(file_path), frontier_mistral_client, MINISTRAL_3B)
+        articles_by_id |= index_article_by_id(articles)
+
+    print(f"Il y a {len(articles_by_id)} articles récupéré du code du travail.")
+    return articles_by_id
+
+def fetch_documents(dir: Path) -> list[Document]:
+    # TODO: remove this :5
+    file_names = os.listdir(dir.as_posix())[:5]
+    file_paths = [dir.as_posix() + "/" + file_name for file_name in file_names]
+    print("Number of files:", len(file_paths))
+
+    article_by_id = get_articles_from_chunks(file_paths)
+    cleaned_articles_by_id = clean_articles(article_by_id)
+
+    return []
 
 def _print_vector_caracteristics(vectorstore: Chroma):
     """ Warning: this function suppose all vectors have the same dimension. """
@@ -58,13 +84,9 @@ def create_embeddings(chunks: list[Document], langchain_embeddings: Embeddings) 
 
 if __name__ == "__main__":
     from src.embeddings.embedding_models import current_embedding_model
+    chunk_dir = TXT_DIR / "chunks"
 
-    # text_splitter = RecursiveCharacterTextSplitter(chunk_size=600, chunk_overlap=200)
-    text_splitter = SeparatorTextSplitter(separator="[START]")
-    tagged_file_dir = TXT_DIR / "tagged_chunks"
+    documents = fetch_documents(chunk_dir)
 
-    documents = fetch_documents(tagged_file_dir)
-    chunks = create_chunks(text_splitter, documents)
-
-    create_embeddings(chunks, current_embedding_model)
+    # create_embeddings(chunks, current_embedding_model)
     print("Ingestion complete")
