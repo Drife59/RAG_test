@@ -1,3 +1,4 @@
+import pytest
 from src.preprocessing.cleaner.article_cleaner import clean_article
 from src.preprocessing.cleaner.content_article_cleaner import (
     article_with_chapitre,
@@ -8,20 +9,29 @@ from src.preprocessing.cleaner.content_article_cleaner import (
     cleaned_article_with_noise_both_side
 )
 from src.preprocessing.utils import string_similarity
-from src.models.mistral_models import frontier_mistral_client
+# from src.models.mistral_models import frontier_mistral_client, MINISTRAL_3B as FRONTIER_MINISTRAL_3B
+from src.models.ollama_models import ollama_client, MINISTRAL3_3B
 
 MINIMUM_SIMILARITY = 0.95
 
-def test_clean_article_with_chapitre():
-    cleaned_article = clean_article(frontier_mistral_client, article_with_chapitre)
+MODELS_TO_TEST = [
+    (ollama_client, MINISTRAL3_3B),
+    # (frontier_mistral_client, FRONTIER_MINISTRAL_3B),
+]
+
+@pytest.mark.parametrize("client, model", MODELS_TO_TEST)
+def test_clean_article_with_chapitre(client, model):
+    cleaned_article = clean_article(client, model, article_with_chapitre)
     assert string_similarity(cleaned_article, cleaned_article_with_chapitre) > MINIMUM_SIMILARITY
 
-def test_clean_article_with_plenty_noise():
-    cleaned_article = clean_article(frontier_mistral_client, article_with_plenty_noise)
+@pytest.mark.parametrize("client, model", MODELS_TO_TEST)
+def test_clean_article_with_plenty_noise(client, model):
+    cleaned_article = clean_article(client, model, article_with_plenty_noise)
     assert string_similarity(cleaned_article, cleaned_article_with_plenty_noise) > MINIMUM_SIMILARITY
 
-def test_article_with_noise_both_side():
-    cleaned_article = clean_article(frontier_mistral_client, article_with_noise_both_side)
+@pytest.mark.parametrize("client, model", MODELS_TO_TEST)
+def test_article_with_noise_both_side(client, model):
+    cleaned_article = clean_article(ollama_client, MINISTRAL3_3B, article_with_noise_both_side)
     assert string_similarity(cleaned_article, cleaned_article_with_noise_both_side) > MINIMUM_SIMILARITY
 
     
