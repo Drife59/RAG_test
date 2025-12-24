@@ -1,6 +1,6 @@
 import os
 import sys
-from tqdm import tqdm
+from tqdm import tqdm # type: ignore
 from pathlib import Path
 from langchain_core.documents import Document
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
