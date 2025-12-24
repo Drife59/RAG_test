@@ -2,13 +2,14 @@ import os
 import sys
 from pathlib import Path
 
-from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
 from tqdm import tqdm  # type: ignore
 
 from src.config import DB_PATH, TXT_DIR
-from src.models.mistral_models import MINISTRAL_3B, frontier_mistral_client
+from src.models.mistral_models import MINISTRAL_3B as FRONTIER_MINISTRAL_3B
+from src.models.mistral_models import frontier_mistral_client
+from src.models.ollama_models import MINISTRAL3_3B, ollama_client
 from src.preprocessing.cleaner.article_cleaner import clean_article
 from src.preprocessing.extractor.article_extractor import get_articles, index_article_by_id
 
@@ -18,29 +19,19 @@ __import__('pysqlite3')
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 from langchain_chroma import Chroma  # noqa: E402
 
+cleaner_client = ollama_client
+cleaner_model = MINISTRAL3_3B 
 
-def fetch_documents_old(dir: Path) -> list[Document]:
-    print(f"✓ Fetching documents from dir {dir}")
-    documents = []
+extractor_client = frontier_mistral_client
+extractor_model = FRONTIER_MINISTRAL_3B
 
-    loader = DirectoryLoader(
-        path=dir.as_posix(), 
-        glob="**/*.txt", loader_cls=TextLoader, loader_kwargs={"encoding": "utf-8"}
-    )
-    folder_docs = loader.load()
-
-    for doc in folder_docs:
-        documents.append(doc)
-        filename = Path(doc.metadata["source"]).stem
-        print(f'{filename} has been loaded')
-    return documents
 
 def clean_articles(articles_by_id: dict[str, str]) -> dict[str, str | None]:
     print("Start cleaning articles...")
 
     cleaned_articles_by_id: dict[str, str | None] = {}
     for article_id, content in tqdm(articles_by_id.items()):
-        cleaned_articles_by_id[article_id] = clean_article(frontier_mistral_client, MINISTRAL_3B, content)
+        cleaned_articles_by_id[article_id] = clean_article(cleaner_client, MINISTRAL3_3B, content)
 
     print(f"{len(cleaned_articles_by_id)} articles cleaned.")
     return cleaned_articles_by_id
@@ -49,7 +40,7 @@ def get_articles_from_chunks(file_paths: list[str]) -> dict[str, str]:
     articles_by_id: dict[str, str] = {}
     for file_path in tqdm(file_paths):
         print(f"Processing {file_path}...")
-        articles = get_articles(Path(file_path), frontier_mistral_client, MINISTRAL_3B)
+        articles = get_articles(Path(file_path), extractor_client, FRONTIER_MINISTRAL_3B)
         articles_by_id |= index_article_by_id(articles)
 
     print(f"Il y a {len(articles_by_id)} articles récupéré du code du travail.")
