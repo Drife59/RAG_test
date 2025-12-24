@@ -1,24 +1,17 @@
 import os
-import sys
 import time
 from pathlib import Path
 
 from langchain_core.documents import Document
-from langchain_core.embeddings import Embeddings
 from tqdm import tqdm  # type: ignore
 
-from src.config import DB_PATH, TXT_DIR
+from src.config import TXT_DIR
+from src.embeddings.embed import create_embeddings
 from src.models.mistral_models import MINISTRAL_3B as FRONTIER_MINISTRAL_3B
 from src.models.mistral_models import frontier_mistral_client
 from src.models.ollama_models import MINISTRAL3_3B, ollama_client
 from src.preprocessing.cleaner.article_cleaner import clean_article
 from src.preprocessing.extractor.article_extractor import get_articles, index_article_by_id
-
-# We need to do this trick, since python until 3.14 has sqlite3 3.31
-# but Chroma requires 3.35+
-__import__('pysqlite3')
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-from langchain_chroma import Chroma  # noqa: E402
 
 # From cleaning article, local model actually works fine
 cleaner_client = ollama_client
@@ -54,7 +47,8 @@ def get_articles_from_chunks(file_paths: list[str]) -> dict[str, str]:
 
 def get_each_article_as_unique_doc(dir: Path) -> list[Document]:
     file_names = os.listdir(dir.as_posix())
-    file_paths = [dir.as_posix() + "/" + file_name for file_name in file_names]
+    # TODO: remove this when full process is possible
+    file_paths = [dir.as_posix() + "/" + file_name for file_name in file_names][:1]
     print("[get_each_article_as_unique_doc] Number of files to process:", len(file_paths))
 
     article_by_id = get_articles_from_chunks(file_paths)
@@ -70,26 +64,6 @@ def get_each_article_as_unique_doc(dir: Path) -> list[Document]:
 
     print(f'Found: {len(documents)} from processed files.')
     return documents
-
-def _print_vector_caracteristics(vectorstore: Chroma):
-    """ Warning: this function suppose all vectors have the same dimension. """
-    collection = vectorstore._collection
-    count = collection.count()
-    # mypy is complaining it is not indexable but it actually is
-    sample_embedding = collection.get(limit=1, include=["embeddings"])["embeddings"][0] # type: ignore
-    dimensions = len(sample_embedding)
-    print(f"There are {count:,} vectors with {dimensions:,} dimensions in the vector store")
-    
-def create_embeddings(chunks: list[Document], langchain_embeddings: Embeddings) -> Chroma:
-    if os.path.exists(DB_PATH):
-        Chroma(persist_directory=DB_PATH.as_posix(), embedding_function=langchain_embeddings).delete_collection()
-
-    vectorstore = Chroma.from_documents(
-        documents=chunks, embedding=langchain_embeddings, persist_directory=DB_PATH.as_posix()
-    )
-
-    _print_vector_caracteristics(vectorstore)
-    return vectorstore
 
 
 if __name__ == "__main__":
