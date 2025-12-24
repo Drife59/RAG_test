@@ -210,4 +210,4 @@ vector_db
 *.lock
 .vscode/*
 # Do not commit the text file to vectorise
-knowledge-base/txt/
+knowledge-base/txt/chunks
