@@ -1,4 +1,5 @@
 from langchain_text_splitters import CharacterTextSplitter
+
 from src.config import TXT_DIR
 
 # This dir contains the "code du travail", splitted in "big" raw chunks.

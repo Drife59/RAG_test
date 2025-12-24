@@ -1,6 +1,8 @@
 import glob
-import pypdf
 from pathlib import Path
+
+import pypdf
+
 from src.config import PDF_DIR, TXT_DIR
 
 

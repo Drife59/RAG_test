@@ -2,12 +2,11 @@
 Allow the clean articles from unrellevant text, like chapter, title, section, etc.
 """
 
-from src.models.mistral_models import frontier_mistral_client
-from src.models.mistral_models import MINISTRAL_3B
 from openai import OpenAI
-from src.preprocessing.cleaner.content_article_cleaner import article_with_noise_both_side
-
 from openai.types.chat.chat_completion_message_param import ChatCompletionMessageParam
+
+from src.models.mistral_models import MINISTRAL_3B, frontier_mistral_client
+from src.preprocessing.cleaner.content_article_cleaner import article_with_noise_both_side
 
 admin_message = """
 Tu es un assitant qui permet de "nettoyer" des articles juridiques.

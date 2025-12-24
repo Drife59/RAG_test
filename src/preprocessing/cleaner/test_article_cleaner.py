@@ -1,16 +1,17 @@
 import pytest
+
+# from src.models.mistral_models import frontier_mistral_client, MINISTRAL_3B as FRONTIER_MINISTRAL_3B
+from src.models.ollama_models import MINISTRAL3_3B, ollama_client
 from src.preprocessing.cleaner.article_cleaner import clean_article
 from src.preprocessing.cleaner.content_article_cleaner import (
     article_with_chapitre,
-    cleaned_article_with_chapitre,
-    article_with_plenty_noise,
-    cleaned_article_with_plenty_noise,
     article_with_noise_both_side,
-    cleaned_article_with_noise_both_side
+    article_with_plenty_noise,
+    cleaned_article_with_chapitre,
+    cleaned_article_with_noise_both_side,
+    cleaned_article_with_plenty_noise,
 )
 from src.preprocessing.utils import string_similarity
-# from src.models.mistral_models import frontier_mistral_client, MINISTRAL_3B as FRONTIER_MINISTRAL_3B
-from src.models.ollama_models import ollama_client, MINISTRAL3_3B
 
 MINIMUM_SIMILARITY = 0.95
 

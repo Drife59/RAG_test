@@ -1,7 +1,8 @@
 import os
-from langchain_text_splitters import TextSplitter
-from langchain_core.documents import Document
 from pathlib import Path
+
+from langchain_core.documents import Document
+from langchain_text_splitters import TextSplitter
 
 
 class SeparatorTextSplitter(TextSplitter):

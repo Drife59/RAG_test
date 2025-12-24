@@ -1,27 +1,32 @@
 import os
 import sys
-from tqdm import tqdm # type: ignore
 from pathlib import Path
-from langchain_core.documents import Document
+
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
+from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
+from tqdm import tqdm  # type: ignore
+
 from src.config import DB_PATH, TXT_DIR
-from src.preprocessing.extractor.article_extractor import get_articles, index_article_by_id
+from src.models.mistral_models import MINISTRAL_3B, frontier_mistral_client
 from src.preprocessing.cleaner.article_cleaner import clean_article
-from src.models.mistral_models import frontier_mistral_client, MINISTRAL_3B
+from src.preprocessing.extractor.article_extractor import get_articles, index_article_by_id
 
 # We need to do this trick, since python until 3.14 has sqlite3 3.31
 # but Chroma requires 3.35+
 __import__('pysqlite3')
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-from langchain_chroma import Chroma # noqa: E402
+from langchain_chroma import Chroma  # noqa: E402
 
 
 def fetch_documents_old(dir: Path) -> list[Document]:
     print(f"✓ Fetching documents from dir {dir}")
     documents = []
 
-    loader = DirectoryLoader(dir.as_posix(), glob="**/*.txt", loader_cls=TextLoader, loader_kwargs={"encoding": "utf-8"})
+    loader = DirectoryLoader(
+        path=dir.as_posix(), 
+        glob="**/*.txt", loader_cls=TextLoader, loader_kwargs={"encoding": "utf-8"}
+    )
     folder_docs = loader.load()
 
     for doc in folder_docs:

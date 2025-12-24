@@ -5,6 +5,7 @@ and a factory to instanciate them.
 
 from dataclasses import dataclass
 from typing import Literal, Type
+
 from langchain_huggingface import HuggingFaceEmbeddings
 
 from src.embeddings.customTansformer import CustomSentenceTransformerEmbeddings

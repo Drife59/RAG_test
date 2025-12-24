@@ -4,8 +4,10 @@ These models are available on the Ollama platform, and compatible with my NITRO5
 
 More models here: https://ollama.com/library/mistral
 """
-from openai import OpenAI
 from typing import Literal
+
+from openai import OpenAI
+
 from src.config import OLLAMA_URL
 from src.models.utils import test_model
 

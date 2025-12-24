@@ -1,18 +1,19 @@
 import sys
-from langchain_openai import ChatOpenAI
-from langchain_core.messages import SystemMessage, HumanMessage, convert_to_messages
-from langchain_core.messages.base import BaseMessage
+
 from langchain_core.documents import Document
+from langchain_core.messages import HumanMessage, SystemMessage, convert_to_messages
+from langchain_core.messages.base import BaseMessage
+from langchain_openai import ChatOpenAI
+
+from src.config import ANSWER_MODEL, ANSWER_SYSTEM_PROMPT, DB_PATH, RETRIEVAL_K
 from src.embeddings.embedding_models import current_embedding_model
-from src.config import ANSWER_MODEL, DB_PATH, RETRIEVAL_K, ANSWER_SYSTEM_PROMPT
 
 # We need to do this trick, since python until 3.14 has sqlite3 3.31
 # but Chroma requires 3.35+
 __import__('pysqlite3')
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
-from langchain_chroma import Chroma # noqa: E402
-
-from dotenv import load_dotenv # noqa: E402
+from dotenv import load_dotenv  # noqa: E402
+from langchain_chroma import Chroma  # noqa: E402
 
 load_dotenv(override=True)
 

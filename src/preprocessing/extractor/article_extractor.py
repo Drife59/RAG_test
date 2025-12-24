@@ -1,11 +1,12 @@
 import json
 from pathlib import Path
+
 from openai import OpenAI
-from src.models.mistral_models import frontier_mistral_client
-from src.config import TXT_DIR
-from src.models.mistral_models import MINISTRAL_3B
-from openai.types.chat.completion_create_params import ResponseFormat
 from openai.types.chat.chat_completion_message_param import ChatCompletionMessageParam
+from openai.types.chat.completion_create_params import ResponseFormat
+
+from src.config import TXT_DIR
+from src.models.mistral_models import MINISTRAL_3B, frontier_mistral_client
 
 admin_message = """
     Tu es un assistant pour extraire des articles de documents juridiques.

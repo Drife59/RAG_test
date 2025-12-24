@@ -1,6 +1,7 @@
-from langchain_core.embeddings import Embeddings
 from typing import List
-from sentence_transformers import SentenceTransformer 
+
+from langchain_core.embeddings import Embeddings
+from sentence_transformers import SentenceTransformer
 
 DEFAULT_MODEL = "all-MiniLM-L6-v2"
 

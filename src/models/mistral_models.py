@@ -1,7 +1,9 @@
 import os
+from typing import Literal
+
 from dotenv import load_dotenv
 from openai import OpenAI
-from typing import Literal
+
 from src.models.utils import test_model
 
 load_dotenv(override=True)
