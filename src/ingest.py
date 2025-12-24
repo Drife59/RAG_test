@@ -59,6 +59,8 @@ def fetch_documents(dir: Path) -> list[Document]:
     article_by_id = get_articles_from_chunks(file_paths)
     cleaned_articles_by_id = clean_articles(article_by_id)
 
+    print(f'Article count: {len(cleaned_articles_by_id)}')
+
     return []
 
 def _print_vector_caracteristics(vectorstore: Chroma):
@@ -83,7 +85,7 @@ def create_embeddings(chunks: list[Document], langchain_embeddings: Embeddings) 
 
 
 if __name__ == "__main__":
-    from src.embeddings.embedding_models import current_embedding_model
+    # from src.embeddings.embedding_models import current_embedding_model
     chunk_dir = TXT_DIR / "chunks"
 
     documents = fetch_documents(chunk_dir)

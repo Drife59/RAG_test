@@ -53,3 +53,8 @@ dependencies = [
     "gradio>=6.0.2",
     "pytest>=9.0.2",
 ]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.10",
+]

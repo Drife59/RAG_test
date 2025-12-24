@@ -2,7 +2,7 @@ import pytest
 from src.config import TXT_DIR
 from src.preprocessing.utils import string_similarity
 from src.models.mistral_models import frontier_mistral_client, MINISTRAL_3B as FRONTIER_MINISTRAL_3B
-from src.models.ollama_models import ollama_client, MINISTRAL3_3B, MISTRAL_7B, LLAMA_3_2
+# from src.models.ollama_models import ollama_client, MINISTRAL3_3B, MISTRAL_7B, LLAMA_3_2
 from src.preprocessing.extractor.article_extractor import get_articles, index_article_by_id
 from src.preprocessing.cleaner.article_cleaner import clean_article
 from src.preprocessing.extractor.article_part.articles_part_1 import (
