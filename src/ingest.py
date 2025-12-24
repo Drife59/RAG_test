@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 from pathlib import Path
 
 from langchain_core.documents import Document
@@ -42,22 +43,30 @@ def get_articles_from_chunks(file_paths: list[str]) -> dict[str, str]:
         print(f"Processing {file_path}...")
         articles = get_articles(Path(file_path), extractor_client, FRONTIER_MINISTRAL_3B)
         articles_by_id |= index_article_by_id(articles)
+        time.sleep(1)
 
     print(f"Il y a {len(articles_by_id)} articles récupéré du code du travail.")
     return articles_by_id
 
-def fetch_documents(dir: Path) -> list[Document]:
+def get_each_article_as_unique_doc(dir: Path) -> list[Document]:
     # TODO: remove this :5
-    file_names = os.listdir(dir.as_posix())[:5]
+    file_names = os.listdir(dir.as_posix())
     file_paths = [dir.as_posix() + "/" + file_name for file_name in file_names]
     print("Number of files:", len(file_paths))
 
     article_by_id = get_articles_from_chunks(file_paths)
     cleaned_articles_by_id = clean_articles(article_by_id)
 
-    print(f'Article count: {len(cleaned_articles_by_id)}')
+    documents = []
+    for article_id, content in cleaned_articles_by_id.items():
+        if content is None:
+            continue
+        documents.append(
+            Document(page_content=content, metadata={"article_id": article_id})
+        )
 
-    return []
+    print(f'Article count: {len(documents)}')
+    return documents
 
 def _print_vector_caracteristics(vectorstore: Chroma):
     """ Warning: this function suppose all vectors have the same dimension. """
@@ -81,10 +90,10 @@ def create_embeddings(chunks: list[Document], langchain_embeddings: Embeddings) 
 
 
 if __name__ == "__main__":
-    # from src.embeddings.embedding_models import current_embedding_model
+    from src.embeddings.embedding_models import current_embedding_model
     chunk_dir = TXT_DIR / "chunks"
 
-    documents = fetch_documents(chunk_dir)
+    documents = get_each_article_as_unique_doc(chunk_dir)
 
-    # create_embeddings(chunks, current_embedding_model)
+    create_embeddings(documents, current_embedding_model)
     print("Ingestion complete")
