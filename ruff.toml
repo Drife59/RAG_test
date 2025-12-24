@@ -1,4 +1,4 @@
 line-length = 120
 
 [lint]
-select = ["E", "F", "I"]  # activate base rule
+select = ["E", "F", "I", "ISC"]  # activate base rule
