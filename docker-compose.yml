@@ -1,0 +1,18 @@
+services:
+
+  postgres:
+    image: postgres:latest
+    container_name: mon-conteneur-postgres
+    environment:
+      POSTGRES_USER: rag_user
+      POSTGRES_PASSWORD: rag_59#
+      POSTGRES_DB: rag_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+    name: pgdata
