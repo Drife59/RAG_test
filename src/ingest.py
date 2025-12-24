@@ -20,12 +20,15 @@ __import__('pysqlite3')
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 from langchain_chroma import Chroma  # noqa: E402
 
+# From cleaning article, local model actually works fine
 cleaner_client = ollama_client
 cleaner_model = MINISTRAL3_3B 
 
 extractor_client = frontier_mistral_client
 extractor_model = FRONTIER_MINISTRAL_3B
 
+# pause in sec after each chunk file article extraction
+EXTRACTOR_PAUSE = 1
 
 def clean_articles(articles_by_id: dict[str, str]) -> dict[str, str | None]:
     print("Start cleaning articles...")
@@ -43,16 +46,16 @@ def get_articles_from_chunks(file_paths: list[str]) -> dict[str, str]:
         print(f"Processing {file_path}...")
         articles = get_articles(Path(file_path), extractor_client, FRONTIER_MINISTRAL_3B)
         articles_by_id |= index_article_by_id(articles)
-        time.sleep(1)
+        # trying to avoid 429 error
+        time.sleep(EXTRACTOR_PAUSE)
 
     print(f"Il y a {len(articles_by_id)} articles récupéré du code du travail.")
     return articles_by_id
 
 def get_each_article_as_unique_doc(dir: Path) -> list[Document]:
-    # TODO: remove this :5
     file_names = os.listdir(dir.as_posix())
     file_paths = [dir.as_posix() + "/" + file_name for file_name in file_names]
-    print("Number of files:", len(file_paths))
+    print("[get_each_article_as_unique_doc] Number of files to process:", len(file_paths))
 
     article_by_id = get_articles_from_chunks(file_paths)
     cleaned_articles_by_id = clean_articles(article_by_id)
@@ -65,7 +68,7 @@ def get_each_article_as_unique_doc(dir: Path) -> list[Document]:
             Document(page_content=content, metadata={"article_id": article_id})
         )
 
-    print(f'Article count: {len(documents)}')
+    print(f'Found: {len(documents)} from processed files.')
     return documents
 
 def _print_vector_caracteristics(vectorstore: Chroma):
