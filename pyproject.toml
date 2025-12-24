@@ -52,6 +52,7 @@ dependencies = [
     "mypy>=1.19.0",
     "gradio>=6.0.2",
     "pytest>=9.0.2",
+    "piccolo[postgres]>=1.30.0",
 ]
 
 [dependency-groups]
