@@ -59,15 +59,19 @@ async def save_articles(articles_by_id: dict[str, SourcedArticle]) -> None:
     print(f"There is already {len(db_articles_ids)} articles in the database.")
     articles_to_save = [article for article in articles_by_id.values() if article.id not in db_articles_ids]
     print(f"Saving {len(articles_to_save)} new articles.")
-    articles_db = []
+
     for article in articles_to_save:
         new_article = Article(
             id=article.id,
             content=article.content,
             source=article.source
         )
-        articles_db.append(new_article) 
-    Article.insert(*articles_db)
+        try:
+            # I prefer not to insert in bulk, to see any single article failure
+            await Article.insert(new_article)
+        except Exception as e:
+            print("could not save article", new_article)
+            print("Error:", e)
 
 async def get_articles_from_dir(dir: Path) -> dict[str, SourcedArticle]:
     # Avoid processing already processed files
