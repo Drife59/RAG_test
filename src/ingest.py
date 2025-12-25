@@ -33,15 +33,16 @@ def clean_articles(articles_by_id: dict[str, SourcedArticle]) -> dict[str, Sourc
     print(f"{len(cleaned_articles_by_id)} articles cleaned.")
     return cleaned_articles_by_id
 
-async def file_names_to_process(dir: Path) -> list[str]:
+async def get_file_names_to_process(dir: Path) -> list[str]:
     """Check in db filename already processed and return list of file names to process."""
     file_names = os.listdir(dir.as_posix())
 
     file_names_processed = await Article.select(Article.source).distinct().output(as_list=True)
-    print("Following files has already been processed:", file_names_processed)
+    print(f"Following files has already been processed: {file_names_processed} \n")
 
     filtered_file_names = [file_name for file_name in file_names if file_name not in file_names_processed]
-    return [file_name for file_name in filtered_file_names]
+    print(f"{len(filtered_file_names)} files will be processed.\n")
+    return filtered_file_names
 
 
 def get_cleaned_articles_from_chunks(file_path: Path) -> dict[str, SourcedArticle]:
@@ -74,7 +75,7 @@ async def save_articles(articles_by_id: dict[str, SourcedArticle]) -> None:
 
 async def get_articles_from_dir(dir: Path) -> dict[str, SourcedArticle]:
     # Avoid processing already processed files
-    file_names = await file_names_to_process(dir)
+    file_names = await get_file_names_to_process(dir)
 
     articles_by_id: dict[str, SourcedArticle] = {}
     for file_name in file_names:
