@@ -37,7 +37,7 @@ async def file_names_to_process(dir: Path) -> list[str]:
     """Check in db filename already processed and return list of file names to process."""
     file_names = os.listdir(dir.as_posix())
 
-    file_names_processed = await Article.select(Article.source).output(as_list=True)
+    file_names_processed = await Article.select(Article.source).distinct().output(as_list=True)
     print("Following files has already been processed:", file_names_processed)
 
     filtered_file_names = [file_name for file_name in file_names if file_name not in file_names_processed]
@@ -49,9 +49,9 @@ def get_cleaned_articles_from_chunks(file_path: Path) -> dict[str, SourcedArticl
     sourced_articles = get_sourced_articles(file_path, extractor_client, FRONTIER_MINISTRAL_3B)
     print(f"{len(sourced_articles)} articles extracted from {file_path}.", flush=True)
     articles_by_id = index_article_by_id(sourced_articles)
-    cleaned_articles_by_id = clean_articles(articles_by_id)
+    # cleaned_articles_by_id = clean_articles(articles_by_id)
 
-    return cleaned_articles_by_id
+    return articles_by_id
 
 async def save_articles(articles_by_id: dict[str, SourcedArticle]) -> None:
     db_articles_ids = [article.id for article in await Article.objects()]
