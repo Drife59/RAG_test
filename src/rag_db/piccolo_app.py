@@ -5,9 +5,9 @@ the APP_CONFIG.
 
 import os
 
-from piccolo.conf.apps import AppConfig, table_finder, get_package
-from src.rag_db.tables import Article
+from piccolo.conf.apps import AppConfig
 
+from src.rag_db.tables import Article
 
 CURRENT_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 
