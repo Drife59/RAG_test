@@ -37,15 +37,16 @@ def get_response(client: OpenAI, model: str, messages: list[ChatCompletionMessag
     )
     return response.choices[0].message.content
 
-def clean_article(client: OpenAI, model: str, article: str) -> str | None:
-    cleaned_article = get_response(client, model, get_messages(article))
+def clean_article_content(client: OpenAI, model: str, article_content: str) -> str:
+    cleaned_article_content = get_response(client, model, get_messages(article_content))
 
-    if not cleaned_article:
+    if not cleaned_article_content:
         print("ERROR: LLM response empty, could not process article !")
-        return None
+        # Keep the original content, best effort
+        return article_content
 
-    return cleaned_article
+    return cleaned_article_content
 
 
 if __name__ == "__main__":
-    print(clean_article(frontier_mistral_client, MINISTRAL_3B, article_with_noise_both_side))
+    print(clean_article_content(frontier_mistral_client, MINISTRAL_3B, article_with_noise_both_side))

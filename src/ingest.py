@@ -10,8 +10,8 @@ from src.embeddings.embed import create_embeddings
 from src.models.mistral_models import MINISTRAL_3B as FRONTIER_MINISTRAL_3B
 from src.models.mistral_models import frontier_mistral_client
 from src.models.ollama_models import MINISTRAL3_3B, ollama_client
-from src.preprocessing.cleaner.article_cleaner import clean_article
-from src.preprocessing.extractor.article_extractor import get_articles, index_article_by_id
+from src.preprocessing.cleaner.article_cleaner import clean_article_content
+from src.preprocessing.extractor.article_extractor import SourcedArticle, get_sourced_articles, index_article_by_id
 
 # From cleaning article, local model actually works fine
 cleaner_client = ollama_client
@@ -23,22 +23,24 @@ extractor_model = FRONTIER_MINISTRAL_3B
 # pause in sec after each chunk file article extraction
 EXTRACTOR_PAUSE = 1
 
-def clean_articles(articles_by_id: dict[str, str]) -> dict[str, str | None]:
+def clean_articles(articles_by_id: dict[str, SourcedArticle]) -> dict[str, SourcedArticle]:
     print("Start cleaning articles...")
 
-    cleaned_articles_by_id: dict[str, str | None] = {}
-    for article_id, content in tqdm(articles_by_id.items()):
-        cleaned_articles_by_id[article_id] = clean_article(cleaner_client, MINISTRAL3_3B, content)
+    cleaned_articles_by_id: dict[str, SourcedArticle] = {}
+    for article_id, sourced_article in tqdm(articles_by_id.items()):
+        cleaned_content = clean_article_content(cleaner_client, cleaner_model, sourced_article.content)
+        cleaned_articles_by_id[article_id] = sourced_article
+        cleaned_articles_by_id[article_id].content = cleaned_content
 
     print(f"{len(cleaned_articles_by_id)} articles cleaned.")
     return cleaned_articles_by_id
 
-def get_articles_from_chunks(file_paths: list[str]) -> dict[str, str]:
-    articles_by_id: dict[str, str] = {}
+def get_articles_from_chunks(file_paths: list[str]) -> dict[str, SourcedArticle]:
+    articles_by_id: dict[str, SourcedArticle] = {}
     for file_path in tqdm(file_paths):
         print(f"Processing {file_path}...")
-        articles = get_articles(Path(file_path), extractor_client, FRONTIER_MINISTRAL_3B)
-        articles_by_id |= index_article_by_id(articles)
+        sourced_articles = get_sourced_articles(Path(file_path), extractor_client, FRONTIER_MINISTRAL_3B)
+        articles_by_id |= index_article_by_id(sourced_articles)
         # trying to avoid 429 error
         time.sleep(EXTRACTOR_PAUSE)
 
@@ -51,15 +53,16 @@ def get_each_article_as_unique_doc(dir: Path) -> list[Document]:
     file_paths = [dir.as_posix() + "/" + file_name for file_name in file_names][:1]
     print("[get_each_article_as_unique_doc] Number of files to process:", len(file_paths))
 
-    article_by_id = get_articles_from_chunks(file_paths)
-    cleaned_articles_by_id = clean_articles(article_by_id)
+    sourced_article_by_id = get_articles_from_chunks(file_paths)
+    cleaned_articles_by_id = clean_articles(sourced_article_by_id)
 
     documents = []
-    for article_id, content in cleaned_articles_by_id.items():
-        if content is None:
-            continue
+    for article_id, article in cleaned_articles_by_id.items():
         documents.append(
-            Document(page_content=content, metadata={"article_id": article_id})
+            Document(
+                page_content=article.content, 
+                metadata={"article_id": article_id, "source": article.source}
+            )
         )
 
     print(f'Found: {len(documents)} from processed files.')

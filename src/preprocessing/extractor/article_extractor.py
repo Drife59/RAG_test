@@ -1,4 +1,5 @@
 import json
+from dataclasses import dataclass
 from pathlib import Path
 
 from openai import OpenAI
@@ -33,6 +34,20 @@ user_message = """
     {context}
 """
 
+@dataclass
+class SourcedArticle:
+    id: str
+    content: str
+    source: str # aka the chunk file it comes from
+
+    @classmethod
+    def from_dict(cls, data: dict[str, str], filename: str):
+        return cls(
+            id=data["id"],
+            content=data["content"],
+            source=filename
+        )
+
 
 def get_prompt(file_path: Path) -> str:
     with open(file_path.as_posix(), 'r', encoding='utf-8') as f:
@@ -47,7 +62,19 @@ def get_messages(file_path: Path) -> list[ChatCompletionMessageParam]:
         {"role": "user", "content": get_prompt(file_path)},
     ]
 
-def get_json_response(file_path: Path, client: OpenAI, model: str) -> dict | None:
+def get_json_response(file_path: Path, client: OpenAI, model: str, debug=False) -> dict | None:
+    """
+        Get the articles found from file, as:
+        {
+            "articles": [
+                {
+                    "id": "Article L1",
+                    "content": "Tout projet (...)"
+                },
+                ...
+            ]
+        }
+    """
     response_format: ResponseFormat = {"type": "json_object"}
 
     messages = get_messages(file_path)
@@ -61,32 +88,36 @@ def get_json_response(file_path: Path, client: OpenAI, model: str) -> dict | Non
     if not response_content:
         return None
     
+    if debug:
+        with open("result.txt", 'w', encoding='utf-8') as f:
+            f.write(json.dumps(response_content, indent=4, ensure_ascii=False))
+    
     return json.loads(response_content)
 
-def get_articles(file_path: Path, client: OpenAI, model: str) -> list[dict]:
+def get_sourced_articles(file_path: Path, client: OpenAI, model: str) -> list[SourcedArticle]:
     json_response = get_json_response(file_path, client, model)
 
     if not json_response:
         return []
-
+    
     # The last article is probably troncated, do not take it
-    return json_response["articles"][:-1]
+    articles = json_response["articles"][:-1]
+    sourced_articles = [SourcedArticle.from_dict(article, file_path.name) for article in articles]
 
-def index_article_by_id(articles: list[dict]) -> dict[str, str]:
-    return {article["id"]: article["content"] for article in articles}
+    return sourced_articles
+
+def index_article_by_id(articles: list[SourcedArticle]) -> dict[str, SourcedArticle]:
+    return {article.id: article for article in articles}
 
 
 if __name__ == "__main__":
     test_path_164l = TXT_DIR / "code_du_travail_164l.txt"
     test_part1_path = TXT_DIR / "chunks/code_du_travail_part_1.txt"
-    json_response = get_json_response(test_part1_path, frontier_mistral_client, MINISTRAL_3B)
+    sourced_articles = get_sourced_articles(test_part1_path, frontier_mistral_client, MINISTRAL_3B)
 
-    with open("result.txt", 'w', encoding='utf-8') as f:
-        f.write(json.dumps(json_response, indent=4, ensure_ascii=False))
-
-    if not json_response:
-        print("ERROR: LLM response empty, could not process file !")
-        exit(1)
-    articles = json_response["articles"][:-1]
-
-    print(f"Nombre d'articles: {len(articles)}")
+    for article in sourced_articles:
+        print(f"ID: {article.id}")
+        print(f"Content: {article.content}")
+        print(f"Source: {article.source}")
+        print("\n##########################\n")
+    print(f"Nombre d'articles: {len(sourced_articles)}")

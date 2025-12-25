@@ -3,10 +3,10 @@ import pytest
 from src.config import TXT_DIR
 from src.models.mistral_models import MINISTRAL_3B as FRONTIER_MINISTRAL_3B
 from src.models.mistral_models import frontier_mistral_client
-from src.preprocessing.cleaner.article_cleaner import clean_article
+from src.preprocessing.cleaner.article_cleaner import clean_article_content
 
 # from src.models.ollama_models import ollama_client, MINISTRAL3_3B, MISTRAL_7B, LLAMA_3_2
-from src.preprocessing.extractor.article_extractor import get_articles, index_article_by_id
+from src.preprocessing.extractor.article_extractor import get_sourced_articles, index_article_by_id
 from src.preprocessing.extractor.article_part.articles_part_1 import (
     CONTENT_ARTICLE_L1,
     CONTENT_ARTICLE_L2,
@@ -86,7 +86,7 @@ MODELS_TO_TEST = [
 
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
 def test_article_extractor_part_1(client, model):
-    articles = get_articles(TEST_DIR / "code_du_travail_part_1.txt", client, model)
+    articles = get_sourced_articles(TEST_DIR / "code_du_travail_part_1.txt", client, model)
     # 13 articles in this first file, but the last one is troncated and was removed
     assert len(articles) == 12
 
@@ -125,7 +125,7 @@ def test_article_extractor_part_1(client, model):
 
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
 def test_article_extraction_plus_clean_part_1(client, model):
-    articles = get_articles(TEST_DIR / "code_du_travail_part_1.txt", client, model)
+    articles = get_sourced_articles(TEST_DIR / "code_du_travail_part_1.txt", client, model)
     article_by_id = index_article_by_id(articles)
     article_ids = article_by_id.keys()
 
@@ -134,22 +134,22 @@ def test_article_extraction_plus_clean_part_1(client, model):
     assert ID_ARTICLE_L1121_1 in article_ids
     assert ID_ARTICLE_L1131_2 in article_ids
 
-    cleaned_content_l1 = clean_article(client, model, article_by_id[ID_ARTICLE_L1])
+    cleaned_content_l1 = clean_article_content(client, model, article_by_id[ID_ARTICLE_L1])
     assert string_similarity(article_by_id[ID_ARTICLE_L1], cleaned_content_l1) > MINIMUM_SIMILARITY
 
-    cleaned_content_l1111_1 = clean_article(client, model, article_by_id[ID_ARTICLE_L1111_1])
+    cleaned_content_l1111_1 = clean_article_content(client, model, article_by_id[ID_ARTICLE_L1111_1])
     assert string_similarity(article_by_id[ID_ARTICLE_L1111_1], cleaned_content_l1111_1) > MINIMUM_SIMILARITY
 
-    cleaned_content_l1121_1 = clean_article(client, model, article_by_id[ID_ARTICLE_L1121_1])
+    cleaned_content_l1121_1 = clean_article_content(client, model, article_by_id[ID_ARTICLE_L1121_1])
     assert string_similarity(article_by_id[ID_ARTICLE_L1121_1], cleaned_content_l1121_1) > MINIMUM_SIMILARITY
 
-    cleaned_content_l1131_2 = clean_article(client, model, article_by_id[ID_ARTICLE_L1131_2])
+    cleaned_content_l1131_2 = clean_article_content(client, model, article_by_id[ID_ARTICLE_L1131_2])
     assert string_similarity(article_by_id[ID_ARTICLE_L1131_2], cleaned_content_l1131_2) > MINIMUM_SIMILARITY
 
 
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
 def test_article_extractor_part_10(client, model):
-    articles = get_articles(TEST_DIR / "code_du_travail_part_10.txt", client, model)
+    articles = get_sourced_articles(TEST_DIR / "code_du_travail_part_10.txt", client, model)
 
     assert len(articles) == 20
 
