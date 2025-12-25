@@ -46,7 +46,7 @@ async def get_file_names_to_process(dir: Path) -> list[str]:
 
 
 def get_cleaned_articles_from_chunks(file_path: Path) -> dict[str, SourcedArticle]:
-    print(f"Processing {file_path}...")
+    print(f"\nProcessing {file_path}...")
     sourced_articles = get_sourced_articles(file_path, extractor_client, FRONTIER_MINISTRAL_3B)
     print(f"{len(sourced_articles)} articles extracted from {file_path}.", flush=True)
     articles_by_id = index_article_by_id(sourced_articles)
