@@ -185,12 +185,12 @@ def test_article_extractor_part_10(client, model):
     assert string_similarity(article_by_id[ID_ARTICLE_L1225_32].content, CONTENT_ARTICLE_L1225_32) > MINIMUM_SIMILARITY
     assert string_similarity(article_by_id[ID_ARTICLE_L1225_33].content, CONTENT_ARTICLE_L1225_33) > MINIMUM_SIMILARITY
     assert string_similarity(article_by_id[ID_ARTICLE_L1225_34].content, CONTENT_ARTICLE_L1225_34) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_35].content, CONTENT_ARTICLE_L1225_35) > MINIMUM_SIMILARITY 
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_36].content, CONTENT_ARTICLE_L1225_36) > MINIMUM_SIMILARITY 
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_37].content, CONTENT_ARTICLE_L1225_37) > MINIMUM_SIMILARITY 
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_38].content, CONTENT_ARTICLE_L1225_38) > MINIMUM_SIMILARITY 
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_39].content, CONTENT_ARTICLE_L1225_39) > MINIMUM_SIMILARITY 
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_40].content, CONTENT_ARTICLE_L1225_40) > MINIMUM_SIMILARITY 
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_41].content, CONTENT_ARTICLE_L1225_41) > MINIMUM_SIMILARITY  
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_35].content, CONTENT_ARTICLE_L1225_35) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_36].content, CONTENT_ARTICLE_L1225_36) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_37].content, CONTENT_ARTICLE_L1225_37) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_38].content, CONTENT_ARTICLE_L1225_38) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_39].content, CONTENT_ARTICLE_L1225_39) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_40].content, CONTENT_ARTICLE_L1225_40) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_41].content, CONTENT_ARTICLE_L1225_41) > MINIMUM_SIMILARITY 
   
 
