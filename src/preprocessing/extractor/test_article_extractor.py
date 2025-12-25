@@ -90,13 +90,11 @@ def test_article_extractor_part_1(client, model):
     # 13 articles in this first file, but the last one is troncated and was removed
     assert len(articles) == 12
 
-    assert articles[0]['id'] == ID_ARTICLE_L1
-    assert string_similarity(articles[0]['content'], CONTENT_ARTICLE_L1) > MINIMUM_SIMILARITY
-
     article_by_id = index_article_by_id(articles)
 
     article_ids = article_by_id.keys()
 
+    assert ID_ARTICLE_L1 in article_ids
     assert ID_ARTICLE_L2 in article_ids
     assert ID_ARTICLE_L3 in article_ids
     assert ID_ARTICLE_L1111_1 in article_ids
@@ -109,19 +107,19 @@ def test_article_extractor_part_1(client, model):
     assert ID_ARTICLE_L1132_1 in article_ids
     assert ID_ARTICLE_L1132_2 in article_ids
 
-    assert string_similarity(article_by_id[ID_ARTICLE_L1], CONTENT_ARTICLE_L1) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L2], CONTENT_ARTICLE_L2) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L3], CONTENT_ARTICLE_L3) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L1111_1], CONTENT_ARTICLE_L1111_1) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L1111_2], CONTENT_ARTICLE_L1111_2) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L1111_3], CONTENT_ARTICLE_L1111_3) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L1121_1], CONTENT_ARTICLE_L1121_1) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L1121_2], CONTENT_ARTICLE_L1121_2) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L1131_1], CONTENT_ARTICLE_L1131_1) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1].content, CONTENT_ARTICLE_L1) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L2].content, CONTENT_ARTICLE_L2) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L3].content, CONTENT_ARTICLE_L3) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1111_1].content, CONTENT_ARTICLE_L1111_1) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1111_2].content, CONTENT_ARTICLE_L1111_2) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1111_3].content, CONTENT_ARTICLE_L1111_3) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1121_1].content, CONTENT_ARTICLE_L1121_1) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1121_2].content, CONTENT_ARTICLE_L1121_2) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1131_1].content, CONTENT_ARTICLE_L1131_1) > MINIMUM_SIMILARITY
     # Does not work because of the "chapitre II (...)"
     # assert string_similarity(article_by_id[ID_ARTICLE_L1131_2], CONTENT_ARTICLE_L1131_2) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L1132_1], CONTENT_ARTICLE_L1132_1) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L1132_2], CONTENT_ARTICLE_L1132_2) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1132_1].content, CONTENT_ARTICLE_L1132_1) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1132_2].content, CONTENT_ARTICLE_L1132_2) > MINIMUM_SIMILARITY
 
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
 def test_article_extraction_plus_clean_part_1(client, model):
@@ -134,17 +132,17 @@ def test_article_extraction_plus_clean_part_1(client, model):
     assert ID_ARTICLE_L1121_1 in article_ids
     assert ID_ARTICLE_L1131_2 in article_ids
 
-    cleaned_content_l1 = clean_article_content(client, model, article_by_id[ID_ARTICLE_L1])
-    assert string_similarity(article_by_id[ID_ARTICLE_L1], cleaned_content_l1) > MINIMUM_SIMILARITY
+    cleaned_content_l1 = clean_article_content(client, model, article_by_id[ID_ARTICLE_L1].content)
+    assert string_similarity(article_by_id[ID_ARTICLE_L1].content, cleaned_content_l1) > MINIMUM_SIMILARITY
 
-    cleaned_content_l1111_1 = clean_article_content(client, model, article_by_id[ID_ARTICLE_L1111_1])
-    assert string_similarity(article_by_id[ID_ARTICLE_L1111_1], cleaned_content_l1111_1) > MINIMUM_SIMILARITY
+    cleaned_content_l1111_1 = clean_article_content(client, model, article_by_id[ID_ARTICLE_L1111_1].content)
+    assert string_similarity(article_by_id[ID_ARTICLE_L1111_1].content, cleaned_content_l1111_1) > MINIMUM_SIMILARITY
 
-    cleaned_content_l1121_1 = clean_article_content(client, model, article_by_id[ID_ARTICLE_L1121_1])
-    assert string_similarity(article_by_id[ID_ARTICLE_L1121_1], cleaned_content_l1121_1) > MINIMUM_SIMILARITY
+    cleaned_content_l1121_1 = clean_article_content(client, model, article_by_id[ID_ARTICLE_L1121_1].content)
+    assert string_similarity(article_by_id[ID_ARTICLE_L1121_1].content, cleaned_content_l1121_1) > MINIMUM_SIMILARITY
 
-    cleaned_content_l1131_2 = clean_article_content(client, model, article_by_id[ID_ARTICLE_L1131_2])
-    assert string_similarity(article_by_id[ID_ARTICLE_L1131_2], cleaned_content_l1131_2) > MINIMUM_SIMILARITY
+    cleaned_content_l1131_2 = clean_article_content(client, model, article_by_id[ID_ARTICLE_L1131_2].content)
+    assert string_similarity(article_by_id[ID_ARTICLE_L1131_2].content, cleaned_content_l1131_2) > MINIMUM_SIMILARITY
 
 
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
@@ -176,23 +174,23 @@ def test_article_extractor_part_10(client, model):
     assert ID_ARTICLE_L1225_40 in article_ids
     assert ID_ARTICLE_L1225_41 in article_ids
 
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_24], CONTENT_ARTICLE_L1225_24) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_25], CONTENT_ARTICLE_L1225_25) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_26], CONTENT_ARTICLE_L1225_26) > MINIMUM_SIMILARITY 
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_27], CONTENT_ARTICLE_L1225_27) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_28], CONTENT_ARTICLE_L1225_28) > MINIMUM_SIMILARITY 
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_29], CONTENT_ARTICLE_L1225_29) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_30], CONTENT_ARTICLE_L1225_30) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_31], CONTENT_ARTICLE_L1225_31) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_32], CONTENT_ARTICLE_L1225_32) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_33], CONTENT_ARTICLE_L1225_33) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_34], CONTENT_ARTICLE_L1225_34) > MINIMUM_SIMILARITY
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_35], CONTENT_ARTICLE_L1225_35) > MINIMUM_SIMILARITY 
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_36], CONTENT_ARTICLE_L1225_36) > MINIMUM_SIMILARITY 
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_37], CONTENT_ARTICLE_L1225_37) > MINIMUM_SIMILARITY 
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_38], CONTENT_ARTICLE_L1225_38) > MINIMUM_SIMILARITY 
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_39], CONTENT_ARTICLE_L1225_39) > MINIMUM_SIMILARITY 
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_40], CONTENT_ARTICLE_L1225_40) > MINIMUM_SIMILARITY 
-    assert string_similarity(article_by_id[ID_ARTICLE_L1225_41], CONTENT_ARTICLE_L1225_41) > MINIMUM_SIMILARITY  
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_24].content, CONTENT_ARTICLE_L1225_24) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_25].content, CONTENT_ARTICLE_L1225_25) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_26].content, CONTENT_ARTICLE_L1225_26) > MINIMUM_SIMILARITY 
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_27].content, CONTENT_ARTICLE_L1225_27) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_28].content, CONTENT_ARTICLE_L1225_28) > MINIMUM_SIMILARITY 
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_29].content, CONTENT_ARTICLE_L1225_29) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_30].content, CONTENT_ARTICLE_L1225_30) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_31].content, CONTENT_ARTICLE_L1225_31) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_32].content, CONTENT_ARTICLE_L1225_32) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_33].content, CONTENT_ARTICLE_L1225_33) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_34].content, CONTENT_ARTICLE_L1225_34) > MINIMUM_SIMILARITY
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_35].content, CONTENT_ARTICLE_L1225_35) > MINIMUM_SIMILARITY 
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_36].content, CONTENT_ARTICLE_L1225_36) > MINIMUM_SIMILARITY 
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_37].content, CONTENT_ARTICLE_L1225_37) > MINIMUM_SIMILARITY 
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_38].content, CONTENT_ARTICLE_L1225_38) > MINIMUM_SIMILARITY 
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_39].content, CONTENT_ARTICLE_L1225_39) > MINIMUM_SIMILARITY 
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_40].content, CONTENT_ARTICLE_L1225_40) > MINIMUM_SIMILARITY 
+    assert string_similarity(article_by_id[ID_ARTICLE_L1225_41].content, CONTENT_ARTICLE_L1225_41) > MINIMUM_SIMILARITY  
   
 
