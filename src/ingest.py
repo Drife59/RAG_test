@@ -37,8 +37,7 @@ async def file_names_to_process(dir: Path) -> list[str]:
     """Check in db filename already processed and return list of file names to process."""
     file_names = os.listdir(dir.as_posix())
 
-    db_articles = await Article.select(Article.id).output(as_list=True)
-    file_names_processed = [article.source for article in db_articles]
+    file_names_processed = await Article.select(Article.source).output(as_list=True)
     print("Following files has already been processed:", file_names_processed)
 
     filtered_file_names = [file_name for file_name in file_names if file_name not in file_names_processed]
