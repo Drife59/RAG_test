@@ -19,8 +19,7 @@ user_message = """
     Tu vas recevoir en context un morceau du code du travail français, un document juridique séparé en articles.
     Ta mission est de séparer chaque article de ce document.
 
-    Dans ta réponse, donne moi le nombre d'article total que tu as trouvé.
-    Puis donne moi, pour chaque article son identifiant et son contenu.
+    Donne moi, pour chaque article son identifiant et son contenu.
 
     Format de réponse obligatoire:
     Retourne UNIQUEMENT un JSON valide avec les clés suivantes :
