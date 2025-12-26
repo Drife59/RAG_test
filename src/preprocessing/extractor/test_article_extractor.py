@@ -1,8 +1,7 @@
 import pytest
 
 from src.config import TXT_DIR
-from src.models.mistral_models import MINISTRAL_3B as FRONTIER_MINISTRAL_3B
-from src.models.mistral_models import frontier_mistral_client
+from src.models.mistral_models import MISTRAL_LARGE_32, frontier_mistral_client
 from src.preprocessing.cleaner.article_cleaner import clean_article_content
 
 # from src.models.ollama_models import ollama_client, MINISTRAL3_3B, MISTRAL_7B, LLAMA_3_2
@@ -77,11 +76,36 @@ TEST_DIR = TXT_DIR / "test"
 MINIMUM_SIMILARITY = 0.95
 
 MODELS_TO_TEST = [
-    # This model fails
+    # ------ FAILLING MODELS -------
+    # LOCAL
     # (ollama_client, MINISTRAL3_3B),
     # (ollama_client, LLAMA_3_2),
-    # This model works
-    (frontier_mistral_client, FRONTIER_MINISTRAL_3B),
+
+    # FRONTIER
+    # WTF ? A powerfull frontier failing ? 
+    # (frontier_mistral_client, MISTRAL_MEDIUM_31),
+
+    # -----  WORKING MODELS --------
+
+    # FRONTIER
+    
+    # ~20 seconds
+    # (frontier_mistral_client, MINISTRAL_3B),
+
+    # ~30 seconds
+    # (frontier_mistral_client, MINISTRAL_8B),
+
+    # ~35 seconds
+    # (frontier_mistral_client, MINISTRAL_14B),
+    
+    # ~50 seconds
+    # (frontier_mistral_client, MISTRAL_SMALL_32),
+
+    # ~60 seconds
+    # (frontier_mistral_client, MISTRAL_MEDIUM_31),
+
+    # ~80 seconds
+    (frontier_mistral_client, MISTRAL_LARGE_32),
 ]
 
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
@@ -121,6 +145,7 @@ def test_article_extractor_part_1(client, model):
     assert string_similarity(article_by_id[ID_ARTICLE_L1132_1].content, CONTENT_ARTICLE_L1132_1) > MINIMUM_SIMILARITY
     assert string_similarity(article_by_id[ID_ARTICLE_L1132_2].content, CONTENT_ARTICLE_L1132_2) > MINIMUM_SIMILARITY
 
+@pytest.mark.skip(reason="Obsolete test, obsolete cleaning method.")
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
 def test_article_extraction_plus_clean_part_1(client, model):
     articles = get_sourced_articles(TEST_DIR / "code_du_travail_part_1.txt", client, model)
@@ -142,6 +167,10 @@ def test_article_extraction_plus_clean_part_1(client, model):
     assert string_similarity(article_by_id[ID_ARTICLE_L1121_1].content, cleaned_content_l1121_1) > MINIMUM_SIMILARITY
 
     cleaned_content_l1131_2 = clean_article_content(client, model, article_by_id[ID_ARTICLE_L1131_2].content)
+    print("cleaned_content_l1131_2")
+    print(cleaned_content_l1131_2)
+    print("orginal_content_l1131_2")
+    print(article_by_id[ID_ARTICLE_L1131_2].content, flush=True)
     assert string_similarity(article_by_id[ID_ARTICLE_L1131_2].content, cleaned_content_l1131_2) > MINIMUM_SIMILARITY
 
 

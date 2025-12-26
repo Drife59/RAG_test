@@ -9,10 +9,13 @@ from src.models.utils import test_model
 load_dotenv(override=True)
 mistral_api_key = os.getenv('MISTRAL_API_KEY')
 
-MINISTRAL_8B: Literal["ministral-8b-2512"] = 'ministral-8b-2512'
 MINISTRAL_3B: Literal["ministral-3b-2512"] = 'ministral-3b-2512'
+MINISTRAL_8B: Literal["ministral-8b-2512"] = 'ministral-8b-2512'
+MINISTRAL_14B: Literal["ministral-14b-2512"] = 'ministral-14b-2512'
+
 MISTRAL_SMALL_32: Literal["mistral-small-2506"] = 'mistral-small-2506'
 MISTRAL_MEDIUM_31: Literal["mistral-medium-2508"] = 'mistral-medium-2508'
+MISTRAL_LARGE_32: Literal["mistral-large-2512"] = 'mistral-large-2512'
 MAGISTRAL_MEDIUM_12: Literal["magistral-medium-2509"] = 'magistral-medium-2509'
 
 
