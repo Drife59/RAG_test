@@ -10,7 +10,7 @@ load_dotenv(override=True)
 def format_context(context: list[Document]) -> str:
     result = "<h2 style='color: #ff7800;'>Relevant Context</h2>\n\n"
     for doc in context:
-        result += f"<span style='color: #ff7800;'>Source: {doc.metadata['source']}</span>\n\n"
+        result += f"<span style='color: #ff7800;'>{doc.metadata['article_id']} ({doc.metadata['source']})</span>\n\n"
         result += doc.page_content + "\n\n"
     return result
 
