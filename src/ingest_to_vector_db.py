@@ -13,7 +13,6 @@ ingest_model = FRONTIER_MINISTRAL_3B
 
 
 async def get_each_article_as_unique_doc(dir: Path) -> list[Document]:
-    # TODO: FINISH. BTW: does this work ?
     articles = await Article.objects()
 
     documents = []
@@ -25,7 +24,6 @@ async def get_each_article_as_unique_doc(dir: Path) -> list[Document]:
             )
         )
 
-    print(f'Found: {len(documents)} from DB.')
     return documents
 
 
@@ -34,6 +32,8 @@ async def main():
     chunk_dir = TXT_DIR / "chunks"
 
     documents = await get_each_article_as_unique_doc(chunk_dir)
+
+    print(f'Found: {len(documents)} from DB, to embed in vector DB.')
 
     create_embeddings(documents, current_embedding_model)
     print("Ingestion for SQL DB complete")
