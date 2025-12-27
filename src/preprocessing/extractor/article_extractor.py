@@ -1,3 +1,10 @@
+"""
+This module take input part file and try to extract each articles,
+and also map it the article number (id).
+
+It work on file part, and cannot process the complete "code du travail" part.
+"""
+
 import json
 from dataclasses import dataclass
 from pathlib import Path

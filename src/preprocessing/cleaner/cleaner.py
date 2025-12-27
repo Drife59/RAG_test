@@ -1,3 +1,9 @@
+"""
+Clean part file.
+This is because extraction sometimes goes wrong, because of useless text.
+This module try to remove it (titre, chapitre, section, livre).
+"""
+
 from pathlib import Path
 
 from openai import OpenAI

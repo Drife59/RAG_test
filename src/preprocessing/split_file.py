@@ -1,3 +1,8 @@
+"""
+This module split a big file into smaller chunks.
+This prepare work for th extractor.
+"""
+
 from langchain_text_splitters import CharacterTextSplitter
 
 from src.config import TXT_DIR
