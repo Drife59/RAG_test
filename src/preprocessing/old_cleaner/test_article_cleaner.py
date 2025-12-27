@@ -2,8 +2,8 @@ import pytest
 
 # from src.models.mistral_models import frontier_mistral_client, MINISTRAL_3B as FRONTIER_MINISTRAL_3B
 from src.models.ollama_models import MINISTRAL3_3B, ollama_client
-from src.preprocessing.cleaner.article_cleaner import clean_article_content
-from src.preprocessing.cleaner.content_article_cleaner import (
+from src.preprocessing.old_cleaner.article_cleaner import clean_article_content
+from src.preprocessing.old_cleaner.content_article_cleaner import (
     article_with_chapitre,
     article_with_noise_both_side,
     article_with_plenty_noise,

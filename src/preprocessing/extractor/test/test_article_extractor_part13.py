@@ -6,11 +6,11 @@ from src.models.mistral_models import MISTRAL_SMALL_32, frontier_mistral_client
 # from src.models.ollama_models import ollama_client, MINISTRAL3_3B, MISTRAL_7B, LLAMA_3_2
 from src.preprocessing.extractor.article_extractor import get_sourced_articles, index_article_by_id
 from src.preprocessing.extractor.test.article_part.articles_part_13 import (
+    CONTENT_ARTICLE_L1234_17,
+    CONTENT_ARTICLE_L1234_17_1,
     CONTENT_ARTICLE_L1235_3,
     CONTENT_ARTICLE_L1235_17,
     CONTENT_ARTICLE_L1236_9,
-    CONTENT_ARTICLE_L1234_17,
-    CONTENT_ARTICLE_L1234_17_1,
     ID_ARTICLE_L1234_17,
     ID_ARTICLE_L1234_17_1,
     ID_ARTICLE_L1234_18,

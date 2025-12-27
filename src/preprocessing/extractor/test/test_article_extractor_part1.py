@@ -2,7 +2,6 @@ import pytest
 
 from src.config import TXT_DIR
 from src.models.mistral_models import MINISTRAL_14B, frontier_mistral_client
-from src.preprocessing.cleaner.article_cleaner import clean_article_content
 
 # from src.models.ollama_models import ollama_client, MINISTRAL3_3B, MISTRAL_7B, LLAMA_3_2
 from src.preprocessing.extractor.article_extractor import get_sourced_articles, index_article_by_id
@@ -31,6 +30,7 @@ from src.preprocessing.extractor.test.article_part.articles_part_1 import (
     ID_ARTICLE_L1132_1,
     ID_ARTICLE_L1132_2,
 )
+from src.preprocessing.old_cleaner.article_cleaner import clean_article_content
 from src.preprocessing.utils import string_similarity
 
 TEST_DIR = TXT_DIR / "test" 

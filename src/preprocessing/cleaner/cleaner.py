@@ -1,8 +1,9 @@
 from pathlib import Path
+
 from openai import OpenAI
 from openai.types.chat.chat_completion_message_param import ChatCompletionMessageParam
-from src.config import TXT_DIR
 
+from src.config import TXT_DIR
 from src.models.mistral_models import MISTRAL_SMALL_32, frontier_mistral_client
 
 admin_message = """
