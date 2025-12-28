@@ -25,10 +25,19 @@ MODELS_TO_TEST = [
 ]
 
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
-def test_article_extractor_part_1(client, model):
+def test_file_part_13(client, model):
     cleaned_content = clean_file(TEST_DIR / "code_du_travail_part_13.txt", client, model)
 
     with open(TEST_DIR / "code_du_travail_part_13_cleaned.txt", 'r', encoding='utf-8') as f:
+        expected_content = f.read()
+
+    assert string_similarity(expected_content, cleaned_content) > MINIMUM_SIMILARITY
+
+@pytest.mark.parametrize("client, model", MODELS_TO_TEST)
+def test_file_part_34(client, model):
+    cleaned_content = clean_file(TEST_DIR / "code_du_travail_part_34.txt", client, model)
+
+    with open(TEST_DIR / "code_du_travail_part_34_cleaned.txt", 'r', encoding='utf-8') as f:
         expected_content = f.read()
 
     assert string_similarity(expected_content, cleaned_content) > MINIMUM_SIMILARITY
