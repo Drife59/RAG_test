@@ -3,11 +3,12 @@ Clean part file.
 This is because extraction sometimes goes wrong, because of useless text.
 This module try to remove it (titre, chapitre, section, livre).
 """
-
+import os
 from pathlib import Path
 
 from openai import OpenAI
 from openai.types.chat.chat_completion_message_param import ChatCompletionMessageParam
+from tqdm import tqdm  # type: ignore
 
 from src.config import TXT_DIR
 from src.models.mistral_models import MINISTRAL_14B, frontier_mistral_client
@@ -84,7 +85,24 @@ def clean_file(file_path: Path, client: OpenAI, model: str) -> str:
 
     return cleaned_content
 
+def clean_and_save_files(source_dir: Path, dest_dir: Path, client: OpenAI, model: str) -> None:
+    file_names = os.listdir(source_dir.as_posix())
+
+    print(f'Start cleaning {len(file_names)} files from {source_dir} to {dest_dir}')
+
+    for file_name in tqdm(file_names):
+        print(f'Cleaning {file_name}')
+        clean_file(source_dir / Path(file_name), client, model)
+
+    print("Cleaning complete.")
+
 if __name__ == "__main__" :
+    source_dir = TXT_DIR / "chunks/"
+    destination_dir = TXT_DIR / "cleaned_chunks/"
+
+    clean_and_save_files(source_dir, destination_dir, frontier_mistral_client, MINISTRAL_14B)
+
+def test():
     test_file = TXT_DIR / "test/code_du_travail_part_13.txt"
 
     # MINISTRAL 14B works well
