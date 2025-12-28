@@ -85,7 +85,7 @@ def clean_file(file_path: Path, client: OpenAI, model: str) -> str:
     return cleaned_content
 
 if __name__ == "__main__" :
-    test_file = TXT_DIR / "test/code_du_travail_part_13_without_clean.txt"
+    test_file = TXT_DIR / "test/code_du_travail_part_13.txt"
 
     # MINISTRAL 14B works well
     # MISTRAL MEDIUM works well, but a bit less good

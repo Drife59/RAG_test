@@ -1,25 +1,29 @@
 nécessitant une certaine qualification.
-
 Article L1234-17
  
 Pendant le préavis, l'employeur accorde au salarié qui le demande un délai raisonnable pour rechercher un
 nouvel emploi.
  
+ 
 Article L1234-17-1
 Les dispositions de la présente sous-section s'appliquent à défaut de dispositions légales, conventionnelles ou
 d'usages prévoyant une durée de préavis plus longue. Elles s'appliquent également à la rupture du contrat de
 travail à durée indéterminée à l'initiative du salarié.
-
+Sous-section 6 : Dispositions d'application.
 Article L1234-18
  
 Un décret en Conseil d'Etat détermine les modalités d'application des articles L. 1234-1 à L. 1234-14.
  
+ 
+Section 2 : Documents remis par l'employeur
+Sous-section 1 : Certificat de travail.
 Article L1234-19
  
 A l'expiration du contrat de travail, l'employeur délivre au salarié un certificat dont le contenu est déterminé
 par voie réglementaire.
  
-
+ 
+Sous-section 2 : Reçu pour solde de tout compte.
 Article L1234-20
  
 Le solde de tout compte, établi par l'employeur et dont le salarié lui donne reçu, fait l'inventaire des sommes
@@ -28,7 +32,9 @@ versées au salarié lors de la rupture du contrat de travail.
 Le reçu pour solde de tout compte peut être dénoncé dans les six mois qui suivent sa signature, délai au-delà
 duquel il devient libératoire pour l'employeur pour les sommes qui y sont mentionnées.
  
-
+Chapitre V : Contestations et sanctions des irrégularités du
+licenciement
+Section 1 : Dispositions communes.
 Article L1235-1
  
 En cas de litige, lors de la conciliation prévue à l'article L. 1411-1, l'employeur et le salarié peuvent convenir
@@ -69,14 +75,12 @@ intervient sans que la procédure requise aux articles L. 1232-2, L. 1232-3, L. 
 et L. 1233-13 ait été observée ou sans que la procédure conventionnelle ou statutaire de consultation
 préalable au licenciement ait été respectée, mais pour une cause réelle et sérieuse, le juge accorde au salarié,
 à la charge de l'employeur, une indemnité qui ne peut être supérieure à un mois de salaire.
-
 Article L1235-2-1
  
 En cas de pluralité de motifs de licenciement, si l'un des griefs reprochés au salarié porte atteinte à une
 liberté fondamentale, la nullité encourue de la rupture ne dispense pas le juge d'examiner l'ensemble des
 griefs énoncés, pour en tenir compte, le cas échéant, dans l'évaluation qu'il fait de l'indemnité à allouer au
 salarié, sans préjudice des dispositions de l'article L. 1235-3-1.
-
 Article L1235-3
  
 Si le licenciement d'un salarié survient pour une cause qui n'est pas réelle et sérieuse, le juge peut proposer la
@@ -88,133 +92,257 @@ dessous.
  
 Ancienneté du salarié dans l'entreprise (en années
 complètes)
+ 
 Indemnité minimale (en mois de salaire brut)
+ 
 Indemnité maximale (en mois de salaire brut)
+ 
 0
+ 
 Sans objet
+ 
 1
+ 
 1
+ 
 1
+ 
 2
+ 
 2
+ 
 3
+ 
 3,5
+ 
 3
+ 
 3
+ 
 4
+ 
 4
+ 
 3
+ 
 5
+ 
 Ancienneté du salarié dans l'entreprise (en années
 complètes)
+ 
 Indemnité minimale (en mois de salaire brut)
+ 
 Indemnité maximale (en mois de salaire brut)
+ 
 5
+ 
 3
+ 
 6
+ 
 6
+ 
 3
+ 
 7
+ 
 7
+ 
 3
+ 
 8
+ 
 8
+ 
 3
+ 
 8
+ 
 9
+ 
 3
+ 
 9
+ 
 10
+ 
 3
+ 
 10
+ 
 11
+ 
 3
+ 
 10,5
+ 
 12
+ 
 3
+ 
 11
+ 
 13
+ 
 3
+ 
 11,5
+ 
 14
+ 
 3
+ 
 12
+ 
 15
+ 
 3
+ 
 13
+ 
 16
+ 
 3
+ 
 13,5
+ 
 17
+ 
 3
+ 
 14
+ 
 18
+ 
 3
+ 
 14,5
+ 
 19
+ 
 3
+ 
 15
+ 
 20
+ 
 3
+ 
 15,5
+ 
 21
+ 
 3
+ 
 16
+ 
 22
+ 
 3
+ 
 16,5
+ 
 23
+ 
 3
+ 
 17
+ 
 24
+ 
 3
+ 
 17,5
+ 
 25
+ 
 3
+ 
 18
+ 
 26
+ 
 3
+ 
 18,5
+ 
 27
+ 
 3
+ 
 19
+ 
 28
+ 
 3
+ 
 19,5
+ 
 29
+ 
 3
+ 
 20
+ 
 30 et au-delà
+ 
 3
+ 
 20
  
 En cas de licenciement opéré dans une entreprise employant habituellement moins de onze salariés, les
 montants minimaux fixés ci-dessous sont applicables, par dérogation à ceux fixés à l'alinéa précédent :
+ 
 Ancienneté du salarié dans l'entreprise (en années complètes)
+ 
 Indemnité minimale (en mois de salaire brut)
+ 
 0
+ 
 Sans objet
+ 
 1
+ 
 0,5
+ 
 Ancienneté du salarié dans l'entreprise (en années complètes)
+ 
 Indemnité minimale (en mois de salaire brut)
+ 
 2
+ 
 0,5
+ 
 3
+ 
 1
+ 
 4
+ 
 1
+ 
 5
+ 
 1,5
+ 
 6
+ 
 1,5
+ 
 7
+ 
 2
+ 
 8
+ 
 2
+ 
 9
+ 
 2,5
+ 
 10
+ 
 2,5
  
 Pour déterminer le montant de l'indemnité, le juge peut tenir compte, le cas échéant, des indemnités de
@@ -223,7 +351,6 @@ l'article L. 1234-9.
  
 Cette indemnité est cumulable, le cas échéant, avec les indemnités prévues aux articles L. 1235-12, L.
 1235-13 et L. 1235-15, dans la limite des montants maximaux prévus au présent article.
-
 Article L1235-3-1
  
 L'article L. 1235-3 n'est pas applicable lorsque le juge constate que le licenciement est entaché d'une des
@@ -248,7 +375,6 @@ l'article L. 1225-71 et du statut protecteur dont bénéficient certains salari�
 Titre Ier du livre IV de la deuxième partie du code du travail, qui aurait été perçu pendant la période couverte
 par la nullité et, le cas échéant, sans préjudice de l'indemnité de licenciement légale, conventionnelle ou
 contractuelle.
-
 Article L1235-3-2
  
 Lorsque la rupture du contrat de travail est prononcée par le juge aux torts de l'employeur ou fait suite à une
@@ -256,7 +382,6 @@ demande du salarié dans le cadre de la procédure mentionnée à l'article L. 1
 octroyée est déterminé selon les règles fixées à l'article L. 1235-3, sauf lorsque cette rupture produit les effets
 d'un licenciement nul afférent aux cas mentionnés au 1° à 6° de l'article L. 1235-3-1, pour lesquels il est fait
 application du premier alinéa du même article L. 1235-3-1.
-
 Article L1235-4
  
 Dans les cas prévus aux articles L. 1132-4, L. 1134-4, L. 1144-3, L. 1152-3, L. 1153-4, L. 1235-3 et
@@ -274,19 +399,19 @@ de l'Etat ou des employeurs mentionnés à l'article L. 5424-1, dans des délais
 par décret en Conseil d'Etat, et après mise en demeure, délivrer une contrainte qui, à défaut d'opposition du
 débiteur devant la juridiction compétente, comporte tous les effets d'un jugement et confère le bénéfice de
 l'hypothèque judiciaire.
-
 Article L1235-5
  
 Ne sont pas applicables au licenciement d'un salarié de moins de deux ans d'ancienneté dans l'entreprise
 et au licenciement opéré dans une entreprise employant habituellement moins de onze salariés, les
 dispositions relatives au remboursement des indemnités de chômage, prévues à l'article L. 1235-4, en cas de
 méconnaissance des articles L. 1235-3 et L. 1235-11.
-
 Article L1235-6
  
 Un décret en Conseil d'Etat détermine les modalités d'application de la présente section.
  
  
+Section 2 : Licenciement pour motif économique
+Sous-section 1 : Délais de contestation et voies de recours.
 Article L1235-7
  
 Toute contestation portant sur le licenciement pour motif économique se prescrit par douze mois à compter
@@ -314,6 +439,9 @@ ou en cas d'appel, le litige est porté devant la cour administrative d'appel, q
 mois. Si, à l'issue de ce délai, elle ne s'est pas prononcée ou en cas de pourvoi en cassation, le litige est porté
 devant le Conseil d'Etat.
  
+Le livre V du code de justice administrative est applicable.
+ 
+Sous-section 2 : Actions en justice des organisations syndicales.
 Article L1235-8
  
 Les organisations syndicales de salariés représentatives peuvent exercer en justice toutes les actions résultant
@@ -327,7 +455,7 @@ intention.
 A l'issue de ce délai, l'organisation syndicale avertit l'employeur de son intention d'agir en justice.
  
 Le salarié peut toujours intervenir à l'instance engagée par le syndicat.
-
+Sous-section 3 : Eléments à communiquer au juge.
 Article L1235-9
  
 En cas de recours portant sur un licenciement pour motif économique, l'employeur communique au
@@ -336,7 +464,7 @@ de représentants du personnel dans l'entreprise, tous les éléments fournis à
 application de ce même chapitre.
  
 Un décret en Conseil d'Etat détermine les modalités d'application du présent article.
-
+Sous-section 4 : Sanction des irrégularités.
 Article L1235-10
  
  
@@ -362,7 +490,6 @@ fermeture de l'établissement ou du site ou de l'absence d'emploi disponible.
 Lorsque le salarié ne demande pas la poursuite de son contrat de travail ou lorsque la réintégration est
 impossible, le juge octroie au salarié une indemnité à la charge de l'employeur qui ne peut être inférieure aux
 salaires des six derniers mois.
-
 Article L1235-12
  
 En cas de non-respect par l'employeur des procédures de consultation des représentants du personnel ou
@@ -374,7 +501,6 @@ Article L1235-13
  
 En cas de non-respect de la priorité de réembauche prévue à l'article L. 1233-45, le juge accorde au salarié
 une indemnité qui ne peut être inférieure à un mois de salaire.
-
 Article L1235-14
  
 Ne sont pas applicables au licenciement d'un salarié de moins de deux ans d'ancienneté dans l'entreprise et
@@ -388,7 +514,6 @@ relatives à la sanction :
 3° Du non-respect de la priorité de réembauche, prévues à l'article L. 1235-13.
  
 Le salarié peut prétendre, en cas de licenciement abusif, à une indemnité correspondant au préjudice subi.
-
 Article L1235-15
  
 Est irrégulière toute procédure de licenciement pour motif économique dans une entreprise où le comité
@@ -397,7 +522,6 @@ verbal de carence n'a été établi.
  
 Le salarié a droit à une indemnité à la charge de l'employeur qui ne peut être inférieure à un mois de salaire
 brut, sans préjudice des indemnités de licenciement et de préavis.
-
 Article L1235-16
  
 L'annulation de la décision de validation mentionnée à l'article L. 1233-57-2 ou d'homologation mentionnée
@@ -425,7 +549,8 @@ Article L1235-17
 Un décret en Conseil d'Etat détermine les modalités d'application des articles L. 1235-11 à L. 1235-14.
  
  
-
+Chapitre VI : Rupture de certains types de contrats
+Section 2 : Contrat de mission à l'exportation.
 Article L1236-7
  
 La rupture à l'initiative de l'employeur du contrat de mission à l'exportation prévu à l'article L. 1223-5 est
@@ -433,20 +558,20 @@ soumise aux dispositions du chapitre II relatives au licenciement pour motif per
  
  
 Section 3 : Contrat de chantier ou d'opération
-
 Article L1236-8
  
 La rupture du contrat de chantier ou d'opération qui intervient à la fin du chantier ou une fois l'opération
 réalisée repose sur une cause réelle et sérieuse  
 Cette rupture est soumise aux dispositions des articles L. 1232-2 à L. 1232-6, du chapitre IV, de la section 1
 du chapitre V et du chapitre VIII du présent titre.
-
 Article L1236-9
  
 Si la convention ou l'accord mentionné à l'article L. 1223-8 le prévoit, le salarié licencié à l'issue d'un contrat
 de chantier ou d'opération peut bénéficier d'une priorité de réembauche en contrat à durée indéterminée dans
 le délai et selon les modalités fixés par la convention ou l'accord.
-
+Chapitre VII : Autres cas de rupture
+Section 1 : Rupture à l'initiative du salarié
+Sous-section 1 : Démission.
 Article L1237-1
  
 En cas de démission, l'existence et la durée du préavis sont fixées par la loi, ou par convention ou accord
