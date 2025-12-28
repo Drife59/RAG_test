@@ -10,7 +10,7 @@ from openai import OpenAI
 from openai.types.chat.chat_completion_message_param import ChatCompletionMessageParam
 
 from src.config import TXT_DIR
-from src.models.mistral_models import MISTRAL_SMALL_32, frontier_mistral_client
+from src.models.mistral_models import MINISTRAL_14B, frontier_mistral_client
 
 admin_message = """
 Tu es un assistant qui permet de retirer les lignes de livre, titre, chapitre, section et sous section.
@@ -60,15 +60,19 @@ def get_messages(file_content: str) -> list[ChatCompletionMessageParam]:
         {"role": "user", "content": user_prompt},
     ]
 
-def get_response(client: OpenAI, model: str, messages: list[ChatCompletionMessageParam]) -> str | None:
+def get_response(client: OpenAI, model: str, messages: list[ChatCompletionMessageParam]) -> str:
     response = client.chat.completions.create(
         model=model,
         messages=messages,
         temperature=0
     )
+    # We still want empty text to be returned and investigate later
+    if not response.choices[0].message.content:
+        return ""
+    
     return response.choices[0].message.content
 
-def clean_file(file_path: Path, client: OpenAI, model: str) -> None:
+def clean_file(file_path: Path, client: OpenAI, model: str) -> str:
     with open(file_path.as_posix(), 'r', encoding='utf-8') as f:
         file_content = f.read()
 
@@ -78,9 +82,12 @@ def clean_file(file_path: Path, client: OpenAI, model: str) -> None:
     with open("cleaned_content.txt", 'w', encoding='utf-8') as f:
         f.write(cleaned_content)
 
+    return cleaned_content
+
 if __name__ == "__main__" :
     test_file = TXT_DIR / "test/code_du_travail_part_13_without_clean.txt"
 
     # MINISTRAL 14B works well
-    # MISTRAL SMALL FAILS
-    clean_file(test_file, frontier_mistral_client, MISTRAL_SMALL_32)
+    # MISTRAL MEDIUM works well, but a bit less good
+    # MISTRAL SMALL less good
+    clean_file(test_file, frontier_mistral_client, MINISTRAL_14B)

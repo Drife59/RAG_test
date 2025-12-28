@@ -4,9 +4,9 @@ Allow the clean articles from unrellevant text, like chapter, title, section, et
 
 from openai import OpenAI
 from openai.types.chat.chat_completion_message_param import ChatCompletionMessageParam
-from src.preprocessing.cleaner.content_article_cleaner import article_with_noise_both_side
 
 from src.models.mistral_models import MINISTRAL_3B, frontier_mistral_client
+from src.preprocessing.old_cleaner.content_article_cleaner import article_with_noise_both_side
 
 admin_message = """
 Tu es un assitant qui permet de "nettoyer" des articles juridiques.
