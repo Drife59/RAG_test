@@ -24,20 +24,18 @@ MODELS_TO_TEST = [
     # (frontier_mistral_client, MISTRAL_LARGE_32),
 ]
 
-@pytest.mark.parametrize("client, model", MODELS_TO_TEST)
-def test_file_part_13(client, model):
-    cleaned_content = clean_file(TEST_DIR / "code_du_travail_part_13.txt", client, model)
+def _test_clean_file(client, model, file_name: str, cleaned_file_name: str):
+    cleaned_content = clean_file(TEST_DIR / file_name, client, model)
 
-    with open(TEST_DIR / "code_du_travail_part_13_cleaned.txt", 'r', encoding='utf-8') as f:
+    with open(TEST_DIR / cleaned_file_name, 'r', encoding='utf-8') as f:
         expected_content = f.read()
 
     assert string_similarity(expected_content, cleaned_content) > MINIMUM_SIMILARITY
+
+@pytest.mark.parametrize("client, model", MODELS_TO_TEST)
+def test_file_part_13(client, model):
+    _test_clean_file(client, model, "code_du_travail_part_13.txt", "code_du_travail_part_13_cleaned.txt")
 
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
 def test_file_part_34(client, model):
-    cleaned_content = clean_file(TEST_DIR / "code_du_travail_part_34.txt", client, model)
-
-    with open(TEST_DIR / "code_du_travail_part_34_cleaned.txt", 'r', encoding='utf-8') as f:
-        expected_content = f.read()
-
-    assert string_similarity(expected_content, cleaned_content) > MINIMUM_SIMILARITY
+    _test_clean_file(client, model, "code_du_travail_part_34.txt", "code_du_travail_part_34_cleaned.txt")
