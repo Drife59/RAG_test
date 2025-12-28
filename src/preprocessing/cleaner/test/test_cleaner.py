@@ -7,7 +7,7 @@ from src.preprocessing.utils import string_similarity
 
 TEST_DIR = TXT_DIR / "test" 
 
-# Removing noise (section, chapter, title, etc.) should not modify a lot the content
+# Removing noise (section, chapter, title, etc.) should be very close to manual (human)cleaned content file
 MINIMUM_SIMILARITY = 0.95
 
 MODELS_TO_TEST = [
@@ -39,3 +39,27 @@ def test_file_part_13(client, model):
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
 def test_file_part_34(client, model):
     _test_clean_file(client, model, "code_du_travail_part_34.txt", "code_du_travail_part_34_cleaned.txt")
+
+@pytest.mark.parametrize("client, model", MODELS_TO_TEST)
+def test_file_part_111(client, model):
+    _test_clean_file(client, model, "code_du_travail_part_111.txt", "code_du_travail_part_111_cleaned.txt")
+
+@pytest.mark.parametrize("client, model", MODELS_TO_TEST)
+def test_file_part_154(client, model):
+    _test_clean_file(client, model, "code_du_travail_part_154.txt", "code_du_travail_part_154_cleaned.txt")
+
+@pytest.mark.parametrize("client, model", MODELS_TO_TEST)
+def test_file_part_196(client, model):
+    _test_clean_file(client, model, "code_du_travail_part_196.txt", "code_du_travail_part_196_cleaned.txt")
+
+@pytest.mark.parametrize("client, model", MODELS_TO_TEST)
+def test_file_part_250(client, model):
+    _test_clean_file(client, model, "code_du_travail_part_250.txt", "code_du_travail_part_250_cleaned.txt")
+
+@pytest.mark.parametrize("client, model", MODELS_TO_TEST)
+def test_file_part_316(client, model):
+    _test_clean_file(client, model, "code_du_travail_part_316.txt", "code_du_travail_part_316_cleaned.txt")
+
+@pytest.mark.parametrize("client, model", MODELS_TO_TEST)
+def test_file_part_352(client, model):
+    _test_clean_file(client, model, "code_du_travail_part_352.txt", "code_du_travail_part_352_cleaned.txt")
