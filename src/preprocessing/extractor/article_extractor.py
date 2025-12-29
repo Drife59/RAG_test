@@ -36,7 +36,7 @@ user_message = """
 
     Voici des exemples d'identifiants d'articles:
     ["Article L1111-2", "Article L1251-46", "Article D1221-25", "Article R1221-36", "Article D1226-8",
-      "Article R4451-17", "Article R5422-2-3"]
+      "Article R4451-17", "Article R5422-2-3", "Article D5424-60", "Article R5424-71", "Article R5315-3"]
     Un identifiant d'article comporte obligatoirement le mot "Article".
     N'invente pas d'identifiant d'article si tu n'en trouve pas.
     
