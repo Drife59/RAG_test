@@ -2,6 +2,10 @@
 Clean part file.
 This is because extraction sometimes goes wrong, because of useless text.
 This module try to remove it (titre, chapitre, section, livre).
+
+MINISTRAL14B works very well for this task but fails sometimes.7
+MISTRAL MINI perform badly, for some reason.
+MISTRAL MEDIUM works very well, and seems to be able to handle cases when MINISTRAL14B fails. 
 """
 import os
 from pathlib import Path
@@ -11,7 +15,7 @@ from openai.types.chat.chat_completion_message_param import ChatCompletionMessag
 from tqdm import tqdm  # type: ignore
 
 from src.config import TXT_DIR
-from src.models.mistral_models import MINISTRAL_14B, frontier_mistral_client
+from src.models.mistral_models import MISTRAL_MEDIUM_31, frontier_mistral_client
 
 admin_message = """
 Tu es un assistant qui permet de retirer les lignes de livre, titre, chapitre, section et sous section.
@@ -50,6 +54,19 @@ Exemple de ligne de sous section:
     - Sous-section 3 : Négociation triennale
     - Sous-section 1 : Modalités de la négociation obligatoire
 
+Attention: n'efface pas de ligne d'article.
+Exemple de ligne d'article:
+    - Article L1111-2
+    - Article L1251-46
+    - Article D1221-25
+    - Article R1221-36
+    - Article D1226-8
+    - Article R4451-17 
+    - Article R5422-2-3  
+    - Article D5424-60
+    - Article R5424-71
+    - Article R5315-3
+
 Contexte:
 {Context}
 """
@@ -85,8 +102,13 @@ def clean_file(file_path: Path, client: OpenAI, model: str) -> str:
 
     return cleaned_content
 
-def clean_and_save_files(source_dir: Path, dest_dir: Path, client: OpenAI, model: str) -> None:
-    file_names = os.listdir(source_dir.as_posix())
+def clean_and_save_files(
+        source_dir: Path, dest_dir: Path, client: OpenAI, model: str, filenames_arg: list[str] | None = None
+) -> None:
+    if not filenames_arg:
+        file_names = os.listdir(source_dir.as_posix())
+    else:
+        file_names = filenames_arg
     file_names.sort()
 
     print(f'Start cleaning {len(file_names)} files from {source_dir} to {dest_dir}')
@@ -104,12 +126,10 @@ if __name__ == "__main__" :
     source_dir = TXT_DIR / "chunks/"
     destination_dir = TXT_DIR / "cleaned_chunks/"
 
-    clean_and_save_files(source_dir, destination_dir, frontier_mistral_client, MINISTRAL_14B)
-
-def test():
-    test_file = TXT_DIR / "test/code_du_travail_part_13.txt"
-
-    # MINISTRAL 14B works well
-    # MISTRAL MEDIUM works well, but a bit less good
-    # MISTRAL SMALL less good
-    clean_file(test_file, frontier_mistral_client, MINISTRAL_14B)
+    wrong_file_names = [
+        # No article in there
+        # "code_du_travail_part_183.txt", 
+        "code_du_travail_part_100.txt",
+    ]
+    # Remove "wrong_file_name" if need to reprocess all files
+    clean_and_save_files(source_dir, destination_dir, frontier_mistral_client, MISTRAL_MEDIUM_31, wrong_file_names)
