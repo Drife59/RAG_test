@@ -211,3 +211,4 @@ vector_db
 .vscode/*
 # Do not commit the text file to vectorise
 knowledge-base/txt/chunks
+knowledge-base/txt/cleaned_chunks/
