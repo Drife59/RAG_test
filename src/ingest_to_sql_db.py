@@ -4,13 +4,12 @@ from pathlib import Path
 from tqdm import tqdm  # type: ignore
 
 from src.config import TXT_DIR
-from src.models.mistral_models import MINISTRAL_3B as FRONTIER_MINISTRAL_3B
-from src.models.mistral_models import frontier_mistral_client
+from src.models.mistral_models import MINISTRAL_14B, frontier_mistral_client
 from src.preprocessing.extractor.article_extractor import SourcedArticle, get_sourced_articles, index_article_by_id
 from src.rag_db.tables import Article
 
 extractor_client = frontier_mistral_client
-extractor_model = FRONTIER_MINISTRAL_3B
+extractor_model = MINISTRAL_14B
 
 
 async def get_file_names_to_process(dir: Path) -> list[str]:
@@ -48,7 +47,7 @@ async def save_articles(articles_by_id: dict[str, SourcedArticle]) -> None:
 
 def get_articles_from_chunks(file_path: Path) -> dict[str, SourcedArticle]:
     print(f"\nProcessing {file_path}...")
-    sourced_articles = get_sourced_articles(file_path, extractor_client, FRONTIER_MINISTRAL_3B)
+    sourced_articles = get_sourced_articles(file_path, extractor_client, extractor_model)
     print(f"{len(sourced_articles)} articles extracted from {file_path}.", flush=True)
     article_by_id = index_article_by_id(sourced_articles)
 
@@ -69,7 +68,7 @@ async def fetch_articles_and_save_to_db(dir: Path) -> dict[str, SourcedArticle]:
 
 
 async def main():
-    chunk_dir = TXT_DIR / "chunks"
+    chunk_dir = TXT_DIR / "cleaned_chunks"
 
     article_by_id = await fetch_articles_and_save_to_db(chunk_dir)
 
