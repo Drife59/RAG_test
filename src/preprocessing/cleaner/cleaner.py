@@ -87,12 +87,16 @@ def clean_file(file_path: Path, client: OpenAI, model: str) -> str:
 
 def clean_and_save_files(source_dir: Path, dest_dir: Path, client: OpenAI, model: str) -> None:
     file_names = os.listdir(source_dir.as_posix())
+    file_names.sort()
 
     print(f'Start cleaning {len(file_names)} files from {source_dir} to {dest_dir}')
 
     for file_name in tqdm(file_names):
         print(f'Cleaning {file_name}')
-        clean_file(source_dir / Path(file_name), client, model)
+        cleaned_content = clean_file(source_dir / Path(file_name), client, model)
+
+        with open(dest_dir / Path(file_name), 'w', encoding='utf-8') as f:
+            f.write(cleaned_content)
 
     print("Cleaning complete.")
 
