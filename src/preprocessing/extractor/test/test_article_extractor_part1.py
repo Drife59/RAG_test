@@ -30,7 +30,6 @@ from src.preprocessing.extractor.test.article_part.articles_part_1 import (
     ID_ARTICLE_L1132_1,
     ID_ARTICLE_L1132_2,
 )
-from src.preprocessing.old_cleaner.article_cleaner import clean_article_content
 from src.preprocessing.utils import string_similarity
 
 TEST_DIR = TXT_DIR / "test" 
@@ -106,31 +105,3 @@ def test_article_extractor_part_1(client, model):
     # assert string_similarity(article_by_id[ID_ARTICLE_L1131_2], CONTENT_ARTICLE_L1131_2) > MINIMUM_SIMILARITY
     assert string_similarity(article_by_id[ID_ARTICLE_L1132_1].content, CONTENT_ARTICLE_L1132_1) > MINIMUM_SIMILARITY
     assert string_similarity(article_by_id[ID_ARTICLE_L1132_2].content, CONTENT_ARTICLE_L1132_2) > MINIMUM_SIMILARITY
-
-@pytest.mark.skip(reason="Obsolete test, obsolete cleaning method.")
-@pytest.mark.parametrize("client, model", MODELS_TO_TEST)
-def test_article_extraction_plus_clean_part_1(client, model):
-    articles = get_sourced_articles(TEST_DIR / "code_du_travail_part_1.txt", client, model)
-    article_by_id = index_article_by_id(articles)
-    article_ids = article_by_id.keys()
-
-    assert ID_ARTICLE_L1 in article_ids
-    assert ID_ARTICLE_L1111_1 in article_ids
-    assert ID_ARTICLE_L1121_1 in article_ids
-    assert ID_ARTICLE_L1131_2 in article_ids
-
-    cleaned_content_l1 = clean_article_content(client, model, article_by_id[ID_ARTICLE_L1].content)
-    assert string_similarity(article_by_id[ID_ARTICLE_L1].content, cleaned_content_l1) > MINIMUM_SIMILARITY
-
-    cleaned_content_l1111_1 = clean_article_content(client, model, article_by_id[ID_ARTICLE_L1111_1].content)
-    assert string_similarity(article_by_id[ID_ARTICLE_L1111_1].content, cleaned_content_l1111_1) > MINIMUM_SIMILARITY
-
-    cleaned_content_l1121_1 = clean_article_content(client, model, article_by_id[ID_ARTICLE_L1121_1].content)
-    assert string_similarity(article_by_id[ID_ARTICLE_L1121_1].content, cleaned_content_l1121_1) > MINIMUM_SIMILARITY
-
-    cleaned_content_l1131_2 = clean_article_content(client, model, article_by_id[ID_ARTICLE_L1131_2].content)
-    print("cleaned_content_l1131_2")
-    print(cleaned_content_l1131_2)
-    print("orginal_content_l1131_2")
-    print(article_by_id[ID_ARTICLE_L1131_2].content, flush=True)
-    assert string_similarity(article_by_id[ID_ARTICLE_L1131_2].content, cleaned_content_l1131_2) > MINIMUM_SIMILARITY

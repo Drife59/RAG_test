@@ -3,7 +3,7 @@ Clean part file.
 This is because extraction sometimes goes wrong, because of useless text.
 This module try to remove it (titre, chapitre, section, livre).
 
-MINISTRAL14B works very well for this task but fails sometimes.7
+MINISTRAL14B works very well for this task but fails sometimes.
 MISTRAL MINI perform badly, for some reason.
 MISTRAL MEDIUM works very well, and seems to be able to handle cases when MINISTRAL14B fails. 
 """
