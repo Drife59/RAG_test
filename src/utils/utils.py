@@ -1,3 +1,5 @@
+import time
+
 from langchain_core.documents import Document
 
 
@@ -17,3 +19,13 @@ def dict_to_context_doc(doc: dict[str, str]) -> Document:
 
 def context_docs_to_dicts(docs: list[Document]) -> list[dict[str, str]]:
     return [context_doc_to_dict(doc) for doc in docs]
+
+def display_execution_time(fonction):
+    def wrapper(*args, **kwargs):
+        debut = time.time()
+        resultat = fonction(*args, **kwargs)
+        fin = time.time()
+        temps_execution = fin - debut
+        print(f"Fonction '{fonction.__name__}' took {temps_execution:.4f} secondes.")
+        return resultat
+    return wrapper
