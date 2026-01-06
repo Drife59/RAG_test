@@ -8,7 +8,7 @@ from langchain_openai import ChatOpenAI
 
 from src.config import ANSWER_MODEL, ANSWER_SYSTEM_PROMPT, DB_PATH, RETRIEVAL_K
 from src.embeddings.embedding_models import current_embedding_model
-from src.inference.reranking import evaluate_context
+from src.inference.reranking import evaluate_context, filter_context
 
 # We need to do this trick, since python until 3.14 has sqlite3 3.31
 # but Chroma requires 3.35+
@@ -51,7 +51,8 @@ def answer_question(question: str, history: list[dict] = []) -> tuple[str, list[
     docs = fetch_context(question)
 
     start_time = time.time()
-    evaluate_context(question, docs)
+    evaluated_context = evaluate_context(question, docs)
+    filter_context(evaluated_context)
     end_time = time.time()
 
     print(f"time to validate context: {end_time - start_time}")

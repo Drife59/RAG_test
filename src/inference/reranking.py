@@ -64,3 +64,18 @@ def evaluate_context(question: str, articles: list[Document]) -> list[dict]:
     response_content = response_content.replace("```", "")
 
     return json.loads(response_content)
+
+
+def filter_context(evaluated_contexts: list[dict]) -> list[dict]:
+    pertinent_count = 0
+
+    for evaluated_context in evaluated_contexts:
+        if evaluated_context["pertinent"]:
+            pertinent_count += 1
+
+    print(f"pertinent context count: {pertinent_count}")
+    print(f"filtered context count: {len(evaluated_contexts) - pertinent_count}")
+    if len(evaluated_contexts) > 0:
+        print(f"percentage pertinent context: {pertinent_count / len(evaluated_contexts)}")
+
+    return [context for context in evaluated_contexts if context["pertinent"]]
