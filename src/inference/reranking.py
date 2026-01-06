@@ -1,3 +1,9 @@
+"""
+Evaluate and filter context.
+
+Use LLM to evaluate pertinence of context documents, regarding a question.
+"""
+
 import json
 
 from langchain_core.documents import Document
@@ -33,18 +39,14 @@ prompt_validation_context = """
 
 
 def get_prompt_batch(question: str, articles: list[Document]) -> str:
+    """Return a prompt the evaluate pertinence of a batch of context documents."""
     dict_articles = context_docs_to_dicts(articles)
     json_articles = json.dumps(dict_articles, indent=2, ensure_ascii=False)
 
-    prompt = prompt_validation_context.format(query=question, articles=json_articles)
-
-    with open("prompt_reranking.txt", "w", encoding="utf-8") as f:
-        f.write(prompt)
-
-    return prompt
+    return prompt_validation_context.format(query=question, articles=json_articles)
 
 
-def get_evaluated_context(question: str, articles: list[Document]) -> list[dict]:
+def get_evaluated_context(question: str, articles: list[Document], write_raw_response: bool = False) -> list[dict]:
     prompt = get_prompt_batch(question, articles)
     response = frontier_mistral_client.chat.completions.create(
         model=MISTRAL_SMALL_32, messages=[{"role": "user", "content": prompt}]
@@ -55,8 +57,9 @@ def get_evaluated_context(question: str, articles: list[Document]) -> list[dict]
     if not response_content:
         raise Exception("[reranking]/[evaluate_context]: could not evaluate context")
 
-    with open("result_reranking.txt", "w", encoding="utf-8") as f:
-        f.write(response_content)
+    if write_raw_response:
+        with open("result_reranking.txt", "w", encoding="utf-8") as f:
+            f.write(response_content)
 
     # LLM tend to add extra marker at the beginning and end of file
     response_content = response_content.replace("```json", "")
