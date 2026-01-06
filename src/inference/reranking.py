@@ -71,9 +71,15 @@ def get_evaluated_context(question: str, articles: list[Document], write_raw_res
 def filter_context(evaluated_contexts: list[dict]) -> list[dict]:
     pertinent_count = 0
 
+    non_pertinent_context_docs = []
     for evaluated_context in evaluated_contexts:
         if evaluated_context["pertinent"]:
             pertinent_count += 1
+        else:
+            non_pertinent_context_docs.append(evaluated_context)
+
+    with open("non_pertinent_context.txt", "w", encoding="utf-8") as f:
+        f.write(json.dumps(non_pertinent_context_docs, indent=2, ensure_ascii=False))
 
     print(f"pertinent context count: {pertinent_count}")
     print(f"filtered context count: {len(evaluated_contexts) - pertinent_count}")
