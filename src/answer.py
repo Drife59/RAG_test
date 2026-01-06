@@ -41,15 +41,22 @@ def answer_question(question: str, history: list[dict] = []) -> tuple[str, list[
     """
     Answer the given question with RAG; return the answer and the context documents.
     """
-    combined = combined_question(question, history)
-    docs = fetch_context(combined)
+    # This combined context is from the udemy course. 
+    # combined = combined_question(question, history)
+
+    # For the "code du travail", actually combining question degrade the quality of the answer.
+    # It is probably too complex, we need the context to be very precise.
+    docs = fetch_context(question)
     context = "\n\n".join(doc.page_content for doc in docs)
 
     system_prompt = ANSWER_SYSTEM_PROMPT.format(context=context)
     messages: list[BaseMessage] = [SystemMessage(content=system_prompt)]
+
+    # We target context on last question, however we want all history to be provided to LLM
     messages.extend(convert_to_messages(history))
     messages.append(HumanMessage(content=question))
     response = llm.invoke(messages)
+
     # I'm unsure why response.content is not a always a string. Just make it that way.
     response_content: str = str(response.content)
     return response_content, docs
