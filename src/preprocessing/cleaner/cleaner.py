@@ -62,8 +62,8 @@ Exemple de ligne d'article:
     - Article D1221-25
     - Article R1221-36
     - Article D1226-8
-    - Article R4451-17 
-    - Article R5422-2-3  
+    - Article R4451-17
+    - Article R5422-2-3
     - Article D5424-60
     - Article R5424-71
     - Article R5315-3

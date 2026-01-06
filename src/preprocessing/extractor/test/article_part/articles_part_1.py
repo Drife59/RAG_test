@@ -99,7 +99,7 @@ des risques d'accidents du travail et de maladies professionnelles.
 """
 
 ID_ARTICLE_L1121_1 = "Article L1121-1"
-CONTENT_ARTICLE_L1121_1 = """ 
+CONTENT_ARTICLE_L1121_1 = """
 Nul ne peut apporter aux droits des personnes et aux libertés individuelles et collectives de restrictions qui ne
 seraient pas justifiées par la nature de la tâche à accomplir ni proportionnées au but recherché.
 """

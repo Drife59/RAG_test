@@ -96,7 +96,7 @@ Le congé de paternité et d'accueil de l'enfant entraîne la suspension du cont
  
 Ce congé est composé d'une période de quatre jours calendaires consécutifs, faisant immédiatement suite au
 congé de naissance mentionné au 3° de l'article L. 3142-1, et d'une période de vingt et un jours calendaires,
-portée à vingt-huit jours calendaires en cas de naissances multiples.  
+portée à vingt-huit jours calendaires en cas de naissances multiples.
 Le délai de prévenance de l'employeur quant à la date prévisionnelle de l'accouchement et aux dates de prise
 du congé et à la durée de la ou des périodes de congés, le délai dans lequel les jours de congé doivent être
 pris ainsi que les modalités de fractionnement de la période de congé de vingt et un jours et de vingt-huit
@@ -118,9 +118,9 @@ Il est interdit d'employer le salarié pendant le congé mentionné au 3° de l'
 période de congé de paternité et d'accueil de l'enfant de quatre jours mentionnée au troisième alinéa de
 l'article L. 1225-35, à l'exception de sa prolongation éventuelle mentionnée au dernier alinéa du même article
 L. 1225-35 et sans qu'y fasse, le cas échéant, obstacle le non-respect par le salarié du délai de prévenance
-mentionné à l'avant-dernier alinéa dudit article L. 1225-35.  
+mentionné à l'avant-dernier alinéa dudit article L. 1225-35.
 Si la naissance de l'enfant intervient alors que le salarié a pris des congés payés ou un congé pour
-évènements familiaux, l'interdiction d'emploi débute à l'issue de cette période de congés.  
+évènements familiaux, l'interdiction d'emploi débute à l'issue de cette période de congés.
 L'interdiction d'emploi ne s'applique pas pour le congé mentionné au troisième alinéa de l'article L. 1225-35
 lorsque le salarié ne peut pas bénéficier des indemnités et allocations versées dans les conditions prévues à
 l'article L. 331-8 du code de la sécurité sociale ou par d'autres dispositions législatives ou réglementaires.
@@ -129,7 +129,7 @@ l'article L. 331-8 du code de la sécurité sociale ou par d'autres dispositions
 ID_ARTICLE_L1225_35_2 = "Article L1225-35-2"
 CONTENT_ARTICLE_L1225_35_2 = """
 La durée du congé de paternité et d'accueil de l'enfant est assimilée à une période de travail effectif pour la
-détermination des droits que le salarié tient de son ancienneté.  
+détermination des droits que le salarié tient de son ancienneté.
 Le salarié conserve le bénéfice de tous les avantages qu'il avait acquis avant le début du congé.
 """
 
