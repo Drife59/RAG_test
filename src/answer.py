@@ -29,6 +29,7 @@ llm = ChatOpenAI(temperature=0, model=ANSWER_MODEL)
 def fetch_context(question: str, rerank_filter: bool = True) -> list[Document]:
     """
     Retrieve relevant context documents for a question.
+    As rerank is very time consuming (12-15 seconds for MISTRAL_SMALL_32), we can disable it.
     """
     context_docs = retriever.invoke(question, k=RETRIEVAL_K)
 
@@ -55,7 +56,8 @@ def get_messages(system_prompt: str, history: list[dict], question: str) -> list
 
 def answer_question(question: str, history: list[dict] = []) -> tuple[str, list[Document]]:
     """
-    Answer the given question with RAG; return the answer and the context documents.
+    Answer the given question with RAG and optionnal rerank filter.
+    Return the answer and the context documents.
     """
     context_docs = fetch_context(question)
     system_prompt = get_system_prompt(context_docs)
