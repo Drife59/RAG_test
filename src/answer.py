@@ -41,18 +41,6 @@ def fetch_context(question: str, rerank_filter: bool = True) -> list[Document]:
 
     return filtered_context_docs
 
-
-# This combined context is from the udemy course.
-# combined = combined_question(question, history)
-# For the "code du travail", actually combining question degrade the quality of the answer.
-def combined_question(question: str, history: list[dict] = []) -> str:
-    """
-    Combine all the user's messages into a single string.
-    """
-    prior = "\n".join(m["content"] for m in history if m["role"] == "user")
-    return prior + "\n" + question
-
-
 def get_system_prompt(context_docs: list[Document]) -> str:
     context = "\n\n".join(context_doc.page_content for context_doc in context_docs)
     return ANSWER_SYSTEM_PROMPT.format(context=context)
