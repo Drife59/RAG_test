@@ -9,6 +9,7 @@ from langchain_openai import ChatOpenAI
 from src.config import ANSWER_MODEL, ANSWER_SYSTEM_PROMPT, DB_PATH, RETRIEVAL_K
 from src.embeddings.embedding_models import current_embedding_model
 from src.inference.reranking import get_filtered_contexts
+from src.utils.utils import display_execution_time
 
 # We need to do this trick, since python until 3.14 has sqlite3 3.31
 # but Chroma requires 3.35+
@@ -24,6 +25,7 @@ retriever = vectorstore.as_retriever()
 llm = ChatOpenAI(temperature=0, model=ANSWER_MODEL)
 
 
+@display_execution_time
 def fetch_context(question: str, rerank_filter: bool = True) -> list[Document]:
     """
     Retrieve relevant context documents for a question.
@@ -35,9 +37,7 @@ def fetch_context(question: str, rerank_filter: bool = True) -> list[Document]:
 
     start_time = time.time()
     filtered_context_docs = get_filtered_contexts(question, context_docs)
-    end_time = time.time()
-
-    print(f"time to validate context: {end_time - start_time}")
+    print(f"[fetch_context] time to validate context: {time.time() - start_time}")
 
     return filtered_context_docs
 
@@ -66,12 +66,3 @@ def answer_question(question: str, history: list[dict] = []) -> tuple[str, list[
     # I'm unsure why response.content is not a always a string. Just make it that way.
     response_content: str = str(response.content)
     return response_content, context_docs
-
-
-if __name__ == "__main__":
-    question = "Quels sont les codes APE qui relèvent de la convention syntec ?"
-    answer, docs = answer_question(question)
-    print("Question utilisateur:")
-    print(question)
-    print("\nReponse:")
-    print(answer)
