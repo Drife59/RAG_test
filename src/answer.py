@@ -8,7 +8,7 @@ from langchain_openai import ChatOpenAI
 
 from src.config import ANSWER_MODEL, ANSWER_SYSTEM_PROMPT, DB_PATH, RETRIEVAL_K
 from src.embeddings.embedding_models import current_embedding_model
-from src.inference.reranking import evaluate_context, filter_context
+from src.inference.reranking import get_filtered_contexts
 
 # We need to do this trick, since python until 3.14 has sqlite3 3.31
 # but Chroma requires 3.35+
@@ -48,16 +48,15 @@ def answer_question(question: str, history: list[dict] = []) -> tuple[str, list[
 
     # For the "code du travail", actually combining question degrade the quality of the answer.
     # It is probably too complex, we need the context to be very precise.
-    docs = fetch_context(question)
+    context_docs = fetch_context(question)
 
     start_time = time.time()
-    evaluated_context = evaluate_context(question, docs)
-    filter_context(evaluated_context)
+    filtered_context_docs = get_filtered_contexts(question, context_docs)
     end_time = time.time()
 
     print(f"time to validate context: {end_time - start_time}")
 
-    context = "\n\n".join(doc.page_content for doc in docs)
+    context = "\n\n".join(context_doc.page_content for context_doc in filtered_context_docs)
 
     system_prompt = ANSWER_SYSTEM_PROMPT.format(context=context)
     messages: list[BaseMessage] = [SystemMessage(content=system_prompt)]
@@ -69,7 +68,7 @@ def answer_question(question: str, history: list[dict] = []) -> tuple[str, list[
 
     # I'm unsure why response.content is not a always a string. Just make it that way.
     response_content: str = str(response.content)
-    return response_content, docs
+    return response_content, filtered_context_docs
 
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@ import json
 
 from langchain_core.documents import Document
 
-from src.models.mistral_models import MISTRAL_MEDIUM_31, frontier_mistral_client
+from src.models.mistral_models import MISTRAL_SMALL_32, frontier_mistral_client
 from src.utils.utils import context_docs_to_dicts
 
 prompt_validation_context = """
@@ -44,16 +44,15 @@ def get_prompt_batch(question: str, articles: list[Document]) -> str:
     return prompt
 
 
-def evaluate_context(question: str, articles: list[Document]) -> list[dict]:
+def get_evaluated_context(question: str, articles: list[Document]) -> list[dict]:
     prompt = get_prompt_batch(question, articles)
     response = frontier_mistral_client.chat.completions.create(
-        model=MISTRAL_MEDIUM_31, messages=[{"role": "user", "content": prompt}]
+        model=MISTRAL_SMALL_32, messages=[{"role": "user", "content": prompt}]
     )
     response_content = response.choices[0].message.content
 
-    # Can't evaluate context for some reason, just return articles
+    # Maybe we shoud return all the context forced to pertinent
     if not response_content:
-        # print("[reranking]/[evaluate_context]: could not evaluate context")
         raise Exception("[reranking]/[evaluate_context]: could not evaluate context")
 
     with open("result_reranking.txt", "w", encoding="utf-8") as f:
@@ -63,7 +62,7 @@ def evaluate_context(question: str, articles: list[Document]) -> list[dict]:
     response_content = response_content.replace("```json", "")
     response_content = response_content.replace("```", "")
 
-    return json.loads(response_content)
+    return json.loads(response_content)["evaluations"]
 
 
 def filter_context(evaluated_contexts: list[dict]) -> list[dict]:
@@ -79,3 +78,11 @@ def filter_context(evaluated_contexts: list[dict]) -> list[dict]:
         print(f"percentage pertinent context: {pertinent_count / len(evaluated_contexts)}")
 
     return [context for context in evaluated_contexts if context["pertinent"]]
+
+
+def get_filtered_contexts(question: str, articles: list[Document]) -> list[Document]:
+    evaluated_contexts = get_evaluated_context(question, articles)
+    filtered_context = filter_context(evaluated_contexts)
+    filtered_context_ids = [context["id_article"] for context in filtered_context]
+
+    return [article for article in articles if article.metadata["article_id"] in filtered_context_ids]
