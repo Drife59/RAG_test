@@ -18,10 +18,7 @@ async def get_each_article_as_unique_doc(dir: Path) -> list[Document]:
     documents = []
     for article in articles:
         documents.append(
-            Document(
-                page_content=article.content, 
-                metadata={"article_id": article.id, "source": article.source}
-            )
+            Document(page_content=article.content, metadata={"article_id": article.id, "source": article.source})
         )
 
     return documents
@@ -29,11 +26,12 @@ async def get_each_article_as_unique_doc(dir: Path) -> list[Document]:
 
 async def main():
     from src.embeddings.embedding_models import current_embedding_model
+
     chunk_dir = TXT_DIR / "chunks"
 
     documents = await get_each_article_as_unique_doc(chunk_dir)
 
-    print(f'Found: {len(documents)} from DB, to embed in vector DB.')
+    print(f"Found: {len(documents)} from DB, to embed in vector DB.")
 
     create_embeddings(documents, current_embedding_model)
     print("Ingestion for SQL DB complete")
@@ -41,4 +39,5 @@ async def main():
 
 if __name__ == "__main__":
     import asyncio
+
     asyncio.run(main())

@@ -1,4 +1,10 @@
 line-length = 120
 
+exclude = [
+    "src/rag_db/piccolo_migrations",
+]
+
 [lint]
-select = ["E", "F", "I", "ISC"]  # activate base rule
+select = ["E", "F", "I", "ISC", "W291"]  # activate base rule
+
+

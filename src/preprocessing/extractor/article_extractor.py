@@ -45,27 +45,24 @@ user_message = """
     {context}
 """
 
+
 @dataclass
 class SourcedArticle:
     id: str
     content: str
-    source: str # aka the chunk file it comes from
+    source: str  # aka the chunk file it comes from
 
     @classmethod
     def from_dict(cls, data: dict[str, str], filename: str):
-        return cls(
-            id=data["id"],
-            content=data["content"],
-            source=filename
-        )
+        return cls(id=data["id"], content=data["content"], source=filename)
 
 
 def get_prompt(file_path: Path) -> str:
-    with open(file_path.as_posix(), 'r', encoding='utf-8') as f:
+    with open(file_path.as_posix(), "r", encoding="utf-8") as f:
         file_content = f.read()
 
         return user_message.format(context=file_content)
-    
+
 
 def get_messages(file_path: Path) -> list[ChatCompletionMessageParam]:
     return [
@@ -73,49 +70,48 @@ def get_messages(file_path: Path) -> list[ChatCompletionMessageParam]:
         {"role": "user", "content": get_prompt(file_path)},
     ]
 
+
 def get_json_response(file_path: Path, client: OpenAI, model: str, debug=False) -> dict | None:
     """
-        Get the articles found from file, as:
-        {
-            "articles": [
-                {
-                    "id": "Article L1",
-                    "content": "Tout projet (...)"
-                },
-                ...
-            ]
-        }
+    Get the articles found from file, as:
+    {
+        "articles": [
+            {
+                "id": "Article L1",
+                "content": "Tout projet (...)"
+            },
+            ...
+        ]
+    }
     """
     response_format: ResponseFormat = {"type": "json_object"}
 
     messages = get_messages(file_path)
-    response = client.chat.completions.create(
-        model=model, 
-        messages=messages,
-        response_format=response_format
-    )
+    response = client.chat.completions.create(model=model, messages=messages, response_format=response_format)
     response_content = response.choices[0].message.content
-    
+
     if not response_content:
         return None
-    
+
     if debug:
-        with open("result.txt", 'w', encoding='utf-8') as f:
+        with open("result.txt", "w", encoding="utf-8") as f:
             f.write(json.dumps(response_content, indent=4, ensure_ascii=False))
-    
+
     return json.loads(response_content)
+
 
 def get_sourced_articles(file_path: Path, client: OpenAI, model: str) -> list[SourcedArticle]:
     json_response = get_json_response(file_path, client, model)
 
     if not json_response:
         return []
-    
+
     # The last article is probably troncated, do not take it
     articles = json_response["articles"][:-1]
     sourced_articles = [SourcedArticle.from_dict(article, file_path.name) for article in articles]
 
     return sourced_articles
+
 
 def index_article_by_id(articles: list[SourcedArticle]) -> dict[str, SourcedArticle]:
     return {article.id: article for article in articles}

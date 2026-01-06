@@ -5,60 +5,65 @@ from src.models.mistral_models import MINISTRAL_14B, frontier_mistral_client
 from src.preprocessing.cleaner.cleaner import clean_file
 from src.preprocessing.utils import string_similarity
 
-TEST_DIR = TXT_DIR / "test" 
+TEST_DIR = TXT_DIR / "test"
 
 # Removing noise (section, chapter, title, etc.) should be very close to manual (human)cleaned content file
 MINIMUM_SIMILARITY = 0.95
 
 MODELS_TO_TEST = [
     # -----  WORKING MODELS --------
-
     # (frontier_mistral_client, MINISTRAL_3B),
     # (frontier_mistral_client, MINISTRAL_8B),
     (frontier_mistral_client, MINISTRAL_14B),
-    
     # (frontier_mistral_client, MISTRAL_SMALL_32),
-
     # (frontier_mistral_client, MISTRAL_MEDIUM_31),
-
     # (frontier_mistral_client, MISTRAL_LARGE_32),
 ]
+
 
 def _test_clean_file(client, model, file_name: str, cleaned_file_name: str):
     cleaned_content = clean_file(TEST_DIR / file_name, client, model)
 
-    with open(TEST_DIR / cleaned_file_name, 'r', encoding='utf-8') as f:
+    with open(TEST_DIR / cleaned_file_name, "r", encoding="utf-8") as f:
         expected_content = f.read()
 
     assert string_similarity(expected_content, cleaned_content) > MINIMUM_SIMILARITY
+
 
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
 def test_file_part_13(client, model):
     _test_clean_file(client, model, "code_du_travail_part_13.txt", "code_du_travail_part_13_cleaned.txt")
 
+
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
 def test_file_part_34(client, model):
     _test_clean_file(client, model, "code_du_travail_part_34.txt", "code_du_travail_part_34_cleaned.txt")
+
 
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
 def test_file_part_111(client, model):
     _test_clean_file(client, model, "code_du_travail_part_111.txt", "code_du_travail_part_111_cleaned.txt")
 
+
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
 def test_file_part_154(client, model):
     _test_clean_file(client, model, "code_du_travail_part_154.txt", "code_du_travail_part_154_cleaned.txt")
+
 
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
 def test_file_part_196(client, model):
     _test_clean_file(client, model, "code_du_travail_part_196.txt", "code_du_travail_part_196_cleaned.txt")
 
+
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
 def test_file_part_250(client, model):
     _test_clean_file(client, model, "code_du_travail_part_250.txt", "code_du_travail_part_250_cleaned.txt")
 
+
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
 def test_file_part_316(client, model):
     _test_clean_file(client, model, "code_du_travail_part_316.txt", "code_du_travail_part_316_cleaned.txt")
+
 
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
 def test_file_part_352(client, model):

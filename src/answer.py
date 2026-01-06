@@ -10,8 +10,8 @@ from src.embeddings.embedding_models import current_embedding_model
 
 # We need to do this trick, since python until 3.14 has sqlite3 3.31
 # but Chroma requires 3.35+
-__import__('pysqlite3')
-sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+__import__("pysqlite3")
+sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
 from dotenv import load_dotenv  # noqa: E402
 from langchain_chroma import Chroma  # noqa: E402
 
@@ -41,7 +41,7 @@ def answer_question(question: str, history: list[dict] = []) -> tuple[str, list[
     """
     Answer the given question with RAG; return the answer and the context documents.
     """
-    # This combined context is from the udemy course. 
+    # This combined context is from the udemy course.
     # combined = combined_question(question, history)
 
     # For the "code du travail", actually combining question degrade the quality of the answer.
@@ -63,7 +63,7 @@ def answer_question(question: str, history: list[dict] = []) -> tuple[str, list[
 
 
 if __name__ == "__main__":
-    question="Quels sont les codes APE qui relèvent de la convention syntec ?"
+    question = "Quels sont les codes APE qui relèvent de la convention syntec ?"
     answer, docs = answer_question(question)
     print("Question utilisateur:")
     print(question)

@@ -32,7 +32,7 @@ from src.preprocessing.extractor.test.article_part.articles_part_1 import (
 )
 from src.preprocessing.utils import string_similarity
 
-TEST_DIR = TXT_DIR / "test" 
+TEST_DIR = TXT_DIR / "test"
 
 MINIMUM_SIMILARITY = 0.95
 
@@ -41,33 +41,25 @@ MODELS_TO_TEST = [
     # LOCAL
     # (ollama_client, MINISTRAL3_3B),
     # (ollama_client, LLAMA_3_2),
-
     # FRONTIER
-    # WTF ? A powerfull frontier failing ? 
+    # WTF ? A powerfull frontier failing ?
     # (frontier_mistral_client, MISTRAL_MEDIUM_31),
-
     # -----  WORKING MODELS --------
-
     # FRONTIER
-    
     # ~20 seconds
     # (frontier_mistral_client, MINISTRAL_3B),
-
     # ~30 seconds
     # (frontier_mistral_client, MINISTRAL_8B),
-
     # ~35 seconds
     (frontier_mistral_client, MINISTRAL_14B),
-    
     # ~50 seconds
     # (frontier_mistral_client, MISTRAL_SMALL_32),
-
     # ~60 seconds
     # (frontier_mistral_client, MISTRAL_MEDIUM_31),
-
     # ~80 seconds
     # (frontier_mistral_client, MISTRAL_LARGE_32),
 ]
+
 
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
 def test_article_extractor_part_1(client, model):

@@ -5,8 +5,9 @@ This module try to remove it (titre, chapitre, section, livre).
 
 MINISTRAL14B works very well for this task but fails sometimes.
 MISTRAL MINI perform badly, for some reason.
-MISTRAL MEDIUM works very well, and seems to be able to handle cases when MINISTRAL14B fails. 
+MISTRAL MEDIUM works very well, and seems to be able to handle cases when MINISTRAL14B fails.
 """
+
 import os
 from pathlib import Path
 
@@ -71,6 +72,7 @@ Contexte:
 {Context}
 """
 
+
 def get_messages(file_content: str) -> list[ChatCompletionMessageParam]:
     user_prompt = user_message.format(Context=file_content)
     return [
@@ -78,32 +80,31 @@ def get_messages(file_content: str) -> list[ChatCompletionMessageParam]:
         {"role": "user", "content": user_prompt},
     ]
 
+
 def get_response(client: OpenAI, model: str, messages: list[ChatCompletionMessageParam]) -> str:
-    response = client.chat.completions.create(
-        model=model,
-        messages=messages,
-        temperature=0
-    )
+    response = client.chat.completions.create(model=model, messages=messages, temperature=0)
     # We still want empty text to be returned and investigate later
     if not response.choices[0].message.content:
         return ""
-    
+
     return response.choices[0].message.content
 
+
 def clean_file(file_path: Path, client: OpenAI, model: str) -> str:
-    with open(file_path.as_posix(), 'r', encoding='utf-8') as f:
+    with open(file_path.as_posix(), "r", encoding="utf-8") as f:
         file_content = f.read()
 
     messages = get_messages(file_content)
     cleaned_content = get_response(client, model, messages)
 
-    with open("cleaned_content.txt", 'w', encoding='utf-8') as f:
+    with open("cleaned_content.txt", "w", encoding="utf-8") as f:
         f.write(cleaned_content)
 
     return cleaned_content
 
+
 def clean_and_save_files(
-        source_dir: Path, dest_dir: Path, client: OpenAI, model: str, filenames_arg: list[str] | None = None
+    source_dir: Path, dest_dir: Path, client: OpenAI, model: str, filenames_arg: list[str] | None = None
 ) -> None:
     if not filenames_arg:
         file_names = os.listdir(source_dir.as_posix())
@@ -111,24 +112,25 @@ def clean_and_save_files(
         file_names = filenames_arg
     file_names.sort()
 
-    print(f'Start cleaning {len(file_names)} files from {source_dir} to {dest_dir}')
+    print(f"Start cleaning {len(file_names)} files from {source_dir} to {dest_dir}")
 
     for file_name in tqdm(file_names):
-        print(f'Cleaning {file_name}')
+        print(f"Cleaning {file_name}")
         cleaned_content = clean_file(source_dir / Path(file_name), client, model)
 
-        with open(dest_dir / Path(file_name), 'w', encoding='utf-8') as f:
+        with open(dest_dir / Path(file_name), "w", encoding="utf-8") as f:
             f.write(cleaned_content)
 
     print("Cleaning complete.")
 
-if __name__ == "__main__" :
+
+if __name__ == "__main__":
     source_dir = TXT_DIR / "chunks/"
     destination_dir = TXT_DIR / "cleaned_chunks/"
 
     wrong_file_names = [
         # No article in there
-        # "code_du_travail_part_183.txt", 
+        # "code_du_travail_part_183.txt",
         "code_du_travail_part_100.txt",
     ]
     # Remove "wrong_file_name" if need to reprocess all files

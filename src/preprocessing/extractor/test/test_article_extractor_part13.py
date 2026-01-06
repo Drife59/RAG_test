@@ -43,7 +43,7 @@ from src.preprocessing.extractor.test.article_part.articles_part_13 import (
 )
 from src.preprocessing.utils import string_similarity
 
-TEST_DIR = TXT_DIR / "test" 
+TEST_DIR = TXT_DIR / "test"
 
 MINIMUM_SIMILARITY = 0.95
 
@@ -52,33 +52,25 @@ MODELS_TO_TEST = [
     # LOCAL
     # (ollama_client, MINISTRAL3_3B),
     # (ollama_client, LLAMA_3_2),
-
     # FRONTIER
-    # WTF ? A powerfull frontier failing ? 
+    # WTF ? A powerfull frontier failing ?
     # (frontier_mistral_client, MISTRAL_MEDIUM_31),
-
     # -----  WORKING MODELS --------
-
     # FRONTIER
-    
     # ~20 seconds
     # (frontier_mistral_client, MINISTRAL_3B),
-
     # ~30 seconds
     # (frontier_mistral_client, MINISTRAL_8B),
-
     # ~35 seconds
     # (frontier_mistral_client, MINISTRAL_14B),
-    
     # ~50 seconds
     (frontier_mistral_client, MISTRAL_SMALL_32),
-
     # ~60 seconds
     # (frontier_mistral_client, MISTRAL_MEDIUM_31),
-
     # ~80 seconds
     # (frontier_mistral_client, MISTRAL_LARGE_32),
 ]
+
 
 @pytest.mark.parametrize("client, model", MODELS_TO_TEST)
 def test_article_extractor_part_13(client, model):
@@ -124,9 +116,9 @@ def test_article_extractor_part_13(client, model):
 
     # This article has a very bad pdf transcription, allow bad similarity
     assert string_similarity(article_by_id[ID_ARTICLE_L1234_17].content, CONTENT_ARTICLE_L1234_17) > MINIMUM_SIMILARITY
-    assert string_similarity(
-        article_by_id[ID_ARTICLE_L1234_17_1].content, CONTENT_ARTICLE_L1234_17_1
-    ) > MINIMUM_SIMILARITY
+    assert (
+        string_similarity(article_by_id[ID_ARTICLE_L1234_17_1].content, CONTENT_ARTICLE_L1234_17_1) > MINIMUM_SIMILARITY
+    )
     assert string_similarity(article_by_id[ID_ARTICLE_L1235_3].content, CONTENT_ARTICLE_L1235_3) > 0.7
     assert string_similarity(article_by_id[ID_ARTICLE_L1235_17].content, CONTENT_ARTICLE_L1235_17) > MINIMUM_SIMILARITY
     assert string_similarity(article_by_id[ID_ARTICLE_L1236_9].content, CONTENT_ARTICLE_L1236_9) > MINIMUM_SIMILARITY
