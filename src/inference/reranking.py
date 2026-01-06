@@ -11,6 +11,9 @@ from langchain_core.documents import Document
 from src.models.mistral_models import MISTRAL_SMALL_32, frontier_mistral_client
 from src.utils.utils import context_docs_to_dicts
 
+reranking_model = MISTRAL_SMALL_32
+reranking_client = frontier_mistral_client
+
 prompt_validation_context = """
     Tu es un assistant juridique expert. Voici une requête utilisateur et une liste d'articles juridiques.
     Pour CHAQUE article, réponds avec un JSON contenant :
@@ -48,8 +51,8 @@ def get_prompt_batch(question: str, articles: list[Document]) -> str:
 
 def get_evaluated_context(question: str, articles: list[Document], write_raw_response: bool = False) -> list[dict]:
     prompt = get_prompt_batch(question, articles)
-    response = frontier_mistral_client.chat.completions.create(
-        model=MISTRAL_SMALL_32, messages=[{"role": "user", "content": prompt}]
+    response = reranking_client.chat.completions.create(
+        model=reranking_model, messages=[{"role": "user", "content": prompt}]
     )
     response_content = response.choices[0].message.content
 
