@@ -1,4 +1,5 @@
 import sys
+import time
 
 from langchain_core.documents import Document
 from langchain_core.messages import HumanMessage, SystemMessage, convert_to_messages
@@ -7,6 +8,7 @@ from langchain_openai import ChatOpenAI
 
 from src.config import ANSWER_MODEL, ANSWER_SYSTEM_PROMPT, DB_PATH, RETRIEVAL_K
 from src.embeddings.embedding_models import current_embedding_model
+from src.inference.reranking import evaluate_context
 
 # We need to do this trick, since python until 3.14 has sqlite3 3.31
 # but Chroma requires 3.35+
@@ -47,6 +49,13 @@ def answer_question(question: str, history: list[dict] = []) -> tuple[str, list[
     # For the "code du travail", actually combining question degrade the quality of the answer.
     # It is probably too complex, we need the context to be very precise.
     docs = fetch_context(question)
+
+    start_time = time.time()
+    evaluate_context(question, docs)
+    end_time = time.time()
+
+    print(f"time to validate context: {end_time - start_time}")
+
     context = "\n\n".join(doc.page_content for doc in docs)
 
     system_prompt = ANSWER_SYSTEM_PROMPT.format(context=context)
