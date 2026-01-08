@@ -8,18 +8,20 @@ import json
 
 from langchain_core.documents import Document
 
-from src.models.mistral_models import MISTRAL_SMALL_32, frontier_mistral_client
+from src.models.mistral_models import MISTRAL_MEDIUM_31, frontier_mistral_client
 from src.utils.utils import context_docs_to_dicts
 
-reranking_model = MISTRAL_SMALL_32
+reranking_model = MISTRAL_MEDIUM_31
 reranking_client = frontier_mistral_client
 
 prompt_validation_context = """
     Tu es un assistant juridique expert. Voici une requête utilisateur et une liste d'articles juridiques.
-    Pour CHAQUE article, réponds avec un JSON contenant :
+    Pour CHAQUE article, réponds UNIQUEMENT avec un JSON contenant :
     - id_article (inchangé)
     - pertinent (booléen : vrai si l'article répond à la requête, faux sinon)
     - justification (une phrase expliquant pourquoi)
+
+    J'insiste, renvoie UNIQUEMENT ce JSON.
 
     **Requête utilisateur :**
     {query}
