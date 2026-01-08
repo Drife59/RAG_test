@@ -14,7 +14,11 @@ from openai.types.chat.chat_completion_message_param import ChatCompletionMessag
 from openai.types.chat.completion_create_params import ResponseFormat
 
 from src.config import TXT_DIR
-from src.models.mistral_models import MINISTRAL_3B, frontier_mistral_client
+from src.models.mistral_models import MISTRAL_MEDIUM_31, frontier_mistral_client
+
+
+client = frontier_mistral_client
+model = MISTRAL_MEDIUM_31
 
 admin_message = """
     Tu es un assistant pour extraire des articles de documents juridiques.
@@ -120,7 +124,7 @@ def index_article_by_id(articles: list[SourcedArticle]) -> dict[str, SourcedArti
 if __name__ == "__main__":
     test_path_164l = TXT_DIR / "code_du_travail_164l.txt"
     test_part1_path = TXT_DIR / "chunks/code_du_travail_part_1.txt"
-    sourced_articles = get_sourced_articles(test_part1_path, frontier_mistral_client, MINISTRAL_3B)
+    sourced_articles = get_sourced_articles(test_part1_path, client, model)
 
     for article in sourced_articles:
         print(f"ID: {article.id}")
