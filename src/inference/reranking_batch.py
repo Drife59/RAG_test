@@ -97,11 +97,26 @@ def create_json_line(article: Document, query: str) -> JsonLine:
         body=create_json_line_body(article, query),
     )
 
+def create_jsonl_file(articles: list[Document], query: str) -> str:
+    json_lines = [create_json_line(article, query) for article in articles]
+    content_file = "\n".join([json_line.to_json() for json_line in json_lines])
+
+    with open("batch_reranking.jsonl", "w", encoding="utf-8") as f:
+        f.write(content_file)
+
+    return content_file
+
 
 if __name__ == "__main__":
-    article_test = Document(
-        page_content="Vous n'avez pas le droit de maltraiter les gens", metadata={"article_id": "test_id"}
+    article_test1 = Document(
+        page_content="Vous n'avez pas le droit de maltraiter les gens", metadata={"article_id": "test_id_1"}
     )
-    test = create_json_line(article_test, "Le code du travail protège ?")
 
-    print(test.to_json())
+    article_test2 = Document(
+        page_content="Et encore moins les femmes et les enfants", metadata={"article_id": "test_id_2"}
+    )
+
+    create_jsonl_file([article_test1, article_test2], "Le code du travail protège ?")
+
+    # test = create_json_line(article_test_1, "Le code du travail protège ?")
+    # print(test.to_json())
