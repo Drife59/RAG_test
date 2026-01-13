@@ -16,7 +16,6 @@ from openai.types.chat.completion_create_params import ResponseFormat
 from src.config import TXT_DIR
 from src.models.mistral_models import MISTRAL_MEDIUM_31, frontier_mistral_client
 
-
 client = frontier_mistral_client
 model = MISTRAL_MEDIUM_31
 

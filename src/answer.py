@@ -42,6 +42,7 @@ def fetch_context(question: str, rerank_filter: bool = True) -> list[Document]:
 
     return filtered_context_docs
 
+
 def get_system_prompt(context_docs: list[Document]) -> str:
     context = "\n\n".join(context_doc.page_content for context_doc in context_docs)
     return ANSWER_SYSTEM_PROMPT.format(context=context)
