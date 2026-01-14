@@ -53,6 +53,7 @@ dependencies = [
     "gradio>=6.0.2",
     "pytest>=9.0.2",
     "piccolo[postgres]>=1.30.0",
+    "mistralai>=1.9.11",
 ]
 
 [dependency-groups]
