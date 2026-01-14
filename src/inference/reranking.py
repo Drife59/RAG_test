@@ -3,11 +3,12 @@ Evaluate and filter context.
 
 Use LLM to evaluate pertinence of context documents, regarding a question.
 """
-
+# from typing import TYPE_CHECKING
 import json
 
 from langchain_core.documents import Document
 
+from src.inference.utils import ArticleEvaluation, filter_context
 from src.models.mistral_models import MISTRAL_MEDIUM_31, frontier_mistral_client
 from src.utils.utils import context_docs_to_dicts
 
@@ -50,8 +51,9 @@ def get_prompt_batch(question: str, articles: list[Document]) -> str:
 
     return prompt_validation_context.format(query=question, articles=json_articles)
 
-
-def get_evaluated_context(question: str, articles: list[Document], write_raw_response: bool = False) -> list[dict]:
+def get_evaluated_context(
+        question: str, articles: list[Document], write_raw_response: bool = False
+) -> list[ArticleEvaluation]:
     prompt = get_prompt_batch(question, articles)
     response = reranking_client.chat.completions.create(
         model=reranking_model, messages=[{"role": "user", "content": prompt}]
@@ -70,33 +72,16 @@ def get_evaluated_context(question: str, articles: list[Document], write_raw_res
     response_content = response_content.replace("```json", "")
     response_content = response_content.replace("```", "")
 
-    return json.loads(response_content)["evaluations"]
+    evaluations = []
+    for evaluation in json.loads(response_content)["evaluations"]:
+        evaluations.append(ArticleEvaluation.from_dict(evaluation))
 
-
-def filter_context(evaluated_contexts: list[dict]) -> list[dict]:
-    pertinent_count = 0
-
-    non_pertinent_context_docs = []
-    for evaluated_context in evaluated_contexts:
-        if evaluated_context["pertinent"]:
-            pertinent_count += 1
-        else:
-            non_pertinent_context_docs.append(evaluated_context)
-
-    with open("non_pertinent_context.txt", "w", encoding="utf-8") as f:
-        f.write(json.dumps(non_pertinent_context_docs, indent=2, ensure_ascii=False))
-
-    print(f"pertinent context count: {pertinent_count}")
-    print(f"filtered context count: {len(evaluated_contexts) - pertinent_count}")
-    if len(evaluated_contexts) > 0:
-        print(f"percentage pertinent context: {pertinent_count / len(evaluated_contexts)}")
-
-    return [context for context in evaluated_contexts if context["pertinent"]]
+    return evaluations
 
 
 def get_filtered_contexts(question: str, articles: list[Document]) -> list[Document]:
-    evaluated_contexts = get_evaluated_context(question, articles)
+    evaluated_contexts = get_evaluated_context(question, articles, True)
     filtered_context = filter_context(evaluated_contexts)
-    filtered_context_ids = [context["id_article"] for context in filtered_context]
+    filtered_context_ids = [context.id_article for context in filtered_context]
 
     return [article for article in articles if article.metadata["article_id"] in filtered_context_ids]
